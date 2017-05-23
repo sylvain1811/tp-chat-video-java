@@ -31,7 +31,7 @@ public class JPanelRemove extends JPanel
 
 	public void updateIndex(int indiceRemove)
 	{
-	//TODO parcourir tous les panels removes si leur index est plus petit que indiceRemove, rien faire si il est plus grand décrementer de 1
+	//parcourir tous les panels removes si leur index est plus petit que indiceRemove, rien faire si il est plus grand décrementer de 1
 	//Appeler cette méthode depuis JPanelRemove
 	//Récupérer l'adresse avec getSelectedIndex
 	}

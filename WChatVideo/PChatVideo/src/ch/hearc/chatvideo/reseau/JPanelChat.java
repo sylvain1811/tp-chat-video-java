@@ -6,7 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class JPanelChat extends JPanel implements Chat_I
+public class JPanelChat extends JPanel
 	{
 
 	/*------------------------------------------------------------------*\
@@ -24,10 +24,9 @@ public class JPanelChat extends JPanel implements Chat_I
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override
 	public void setText(String message)
 		{
-		this.textArea.setText(textArea.getText() + "\n" + message);
+		this.textArea.setText(textArea.getText() + message + "\n");
 		}
 
 	/*------------------------------*\

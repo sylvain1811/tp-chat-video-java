@@ -78,7 +78,6 @@ public class JFrameSecret extends JFrame
 					}
 				catch (RemoteException e)
 					{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					}
 				}

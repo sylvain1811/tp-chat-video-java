@@ -84,7 +84,6 @@ public class JPanelPixelparPixel extends JPanel
 								}
 							catch (InterruptedException e)
 								{
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 								}
 						}

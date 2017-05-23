@@ -10,14 +10,14 @@ import org.junit.Assert;
 import com.bilat.tools.reseau.rmi.RmiTools;
 import com.bilat.tools.reseau.rmi.RmiURL;
 
-public class PcUser implements Runnable
+public class Application implements Application_I ,Runnable
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	private PcUser()
+	private Application()
 		{
 		// Rien
 		}
@@ -29,7 +29,7 @@ public class PcUser implements Runnable
 	@Override
 	public void run()
 		{
-		System.out.println("[PcUser]:run");
+		System.out.println("[Application]:run");
 		serverSide();
 		clientSide();
 		}
@@ -37,6 +37,14 @@ public class PcUser implements Runnable
 	/*------------------------------*\
 	|*				Set				*|
 	\*------------------------------*/
+
+	@Override
+	public void setText(String message)
+		{
+		// TODO Ajouter pseudo
+		Application.jPanelChat.setText(message);
+
+		}
 
 	/*------------------------------*\
 	|*				Get				*|
@@ -46,19 +54,20 @@ public class PcUser implements Runnable
 	|*			  Static			*|
 	\*------------------------------*/
 
-	public static synchronized PcUser getInstance()
+	public static synchronized Application getInstance()
 		{
 		Assert.assertTrue(serverName != null);
 		if (INSTANCE == null)
 			{
-			INSTANCE = new PcUser();
+			INSTANCE = new Application();
 			}
 		return INSTANCE;
 		}
 
-	public static void init(String serverName)
+	public static void init(String serverName, JPanelChat chat)
 		{
-		PcUser.serverName = serverName;
+		Application.jPanelChat = chat;
+		Application.serverName = serverName;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -73,10 +82,8 @@ public class PcUser implements Runnable
 		{
 		try
 			{
-			//this.panelChat = ;
-
-			RmiURL rmiURL = new RmiURL(SettingsRMI.CHAT_ID, SettingsRMI.CHAT_PORT);
-			RmiTools.shareObject(panelChat, rmiURL);
+			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, SettingsRMI.APPLICATION_PORT);
+			RmiTools.shareObject(this, rmiURL);
 			}
 		catch (RemoteException e)
 			{
@@ -92,38 +99,48 @@ public class PcUser implements Runnable
 
 	private void clientSide()
 		{
-		Chat_I chat = connect();
-		work(chat);
+		Application_I applicationRemote = connect();
+		work(applicationRemote);
 		}
 
-	private Chat_I connect()
+	private Application_I connect()
 		{
 		try
 			{
 			long delayMs = 1000;
 			int nbTentativeMax = 100;
-			RmiURL rmiURL = new RmiURL(SettingsRMI.CHAT_ID, InetAddress.getByName(serverName), SettingsRMI.CHAT_PORT);
-			Chat_I chat = (Chat_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
+			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
+			Application_I application = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
 
-			return chat;
+			return application;
 			}
 		catch (UnknownHostException e)
 			{
-			System.err.println("[PcUser]:fail to reach host: " + e);
+			System.err.println("[Application]:fail to reach host: " + e);
 			e.printStackTrace();
 			return null;
 			}
 		catch (RemoteException e)
 			{
-			System.err.println("[PcUser]: " + e);
+			System.err.println("[Application]: " + e);
 			e.printStackTrace();
 			return null;
 			}
 		}
 
-	private void work(Chat_I chat)
+	private void work(Application_I applicationRemote)
 		{
+		try
+			{
+			// TODO envoyer les messages
+			applicationRemote.setText("Init");
 
+			}
+		catch (RemoteException e)
+			{
+			System.err.println("[Application]: setText() error in work method");
+			e.printStackTrace();
+			}
 		}
 
 	/*------------------------------------------------------------------*\
@@ -134,7 +151,7 @@ public class PcUser implements Runnable
 	|*			  Static			*|
 	\*------------------------------*/
 
-	private static PcUser INSTANCE = null;
+	private static Application INSTANCE = null;
 	private static String serverName = null;
-	private JPanelChat panelChat;
+	private static JPanelChat jPanelChat;
 	}

@@ -60,7 +60,7 @@ public class JPanelSalleConf extends JPanel
 		this.sleep_ms = value;
 		}
 
-	protected void setRotateSens(RotationSens rotationSens) //TODO remplacer int
+	protected void setRotateSens(RotationSens rotationSens) //remplacer int
 		{
 		this.sensRotation = rotationSens;
 		}
@@ -163,7 +163,6 @@ public class JPanelSalleConf extends JPanel
 			}
 		catch (InterruptedException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		}

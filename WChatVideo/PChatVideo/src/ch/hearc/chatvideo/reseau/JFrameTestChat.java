@@ -20,10 +20,10 @@ public class JFrameTestChat extends JFrame
 		geometry();
 		control();
 		appearance();
-		// TODO Choisir server name
+		// TODO Choisir server name et save dans settings
 		try
 			{
-			PcUser.init(InetAddress.getLocalHost().getHostName());
+			Application.init(InetAddress.getLocalHost().getHostName(), jPanelChat);
 			}
 		catch (UnknownHostException e)
 			{
@@ -31,7 +31,8 @@ public class JFrameTestChat extends JFrame
 			e.printStackTrace();
 			}
 
-		this.pcUser = PcUser.getInstance();
+		this.application = Application.getInstance();
+		(new Thread(application)).start();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -67,7 +68,7 @@ public class JFrameTestChat extends JFrame
 	private void geometry()
 		{
 		// JComponent : Instanciation
-		chat = new JPanelChat();
+		jPanelChat = new JPanelChat();
 		// Layout : Specification
 			{
 			BorderLayout borderLayout = new BorderLayout();
@@ -78,7 +79,7 @@ public class JFrameTestChat extends JFrame
 			}
 
 		// JComponent : add
-		add(chat, BorderLayout.CENTER);
+		add(jPanelChat, BorderLayout.CENTER);
 		}
 
 	private void control()
@@ -98,6 +99,6 @@ public class JFrameTestChat extends JFrame
 	\*------------------------------------------------------------------*/
 
 	// Tools
-	private JPanelChat chat;
-	private PcUser pcUser;
+	private JPanelChat jPanelChat;
+	private Application application;
 	}

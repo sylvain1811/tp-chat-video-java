@@ -41,7 +41,7 @@ public class JPanelJava2DHello extends JPanel
 
 		font1 = new Font("Helvetica", Font.BOLD + Font.ITALIC, 40);
 
-		stroke = new BasicStroke(10, BasicStroke.JOIN_MITER, BasicStroke.CAP_ROUND); //TODO Traitillé
+		stroke = new BasicStroke(10, BasicStroke.JOIN_MITER, BasicStroke.CAP_ROUND); // A faire : Traitillé
 
 		//Traitillé
 			{

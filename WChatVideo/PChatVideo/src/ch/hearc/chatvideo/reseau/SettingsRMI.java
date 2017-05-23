@@ -14,8 +14,8 @@ public class SettingsRMI
 	|*			  Chat				*|
 	\*------------------------------*/
 
-	public static final String CHAT_ID = "ChatTP";
-	public static final int CHAT_PORT = RmiTools.PORT_RMI_DEFAUT;
+	public static final String APPLICATION_ID = "ChatVideoTP";
+	public static final int APPLICATION_PORT = RmiTools.PORT_RMI_DEFAUT;
 
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
