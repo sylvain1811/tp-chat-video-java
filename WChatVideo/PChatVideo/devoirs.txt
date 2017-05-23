@@ -1,0 +1,165 @@
+Crée un package quadratique comme fils de equation:
+crée une clase use quadratique
+crée une classe quadratique
+3 méthode minimum dans quadratique (solve, print, discriminant)
+dans les nombres réels
+pour instancier un tableau: double[] tabABC = new double[3]
+new crée sur le tas, tabABC sur la pile
+-----------------------------------------------------------------------
+Faire UseQuadratiqueClavier.java
+Calculer la complexité de la méthode print de LinkedList
+-----------------------------------------------------------------------
+07/10/2016
+- trouver la nouvelle forme syntaxique du prof
+
+- Combien de fois doit-on lancer en *moyenne(Nombre entier)* un dé à 6 faces pour obtenir au moins
+  une fois chaqune des 6 faces.
+  Contrainte: -Interdiction d'utiliser un marteau (pas de IF).
+  			  -Géneraliser votre code.
+  			  -Séparer bien les affichages et les calculs.
+  Indication: soyez malin.
+  
+- 2 listes (x et y)
+  exemple:
+  print(listx,listy)
+  (x1,y1)=(valeur numérique, valeur numérique)
+  (x2,y2)=(valeur numérique, valeur numérique)
+  ...
+  contrainte: -Implementer la fonction Print de 2 mainières différentes
+ -----------------------------------------------------------------------
+ >28.10.2016
+ -Ecrire un test unitaire pour tester les équations quadratique, créer une classe QuadratiqueTest.
+ -Coder UseTab2D, tester(en console) les 3 methode create, print et fill.
+ -lire class die et les corrige
+  -----------------------------------------------------------------------
+  4.11.2016
+  -Refaire la classe de l'équation Quadratique (from scratch)
+  -Faire une boucle for i = 1 à n sans type simple (employer que des wrapers) (for (new Integer...))
+  -----------------------------------------------------------------------
+  11.11.2016
+  -trouver l'amélioration dans le constructeur de copie de la classe Roue (en restant dans le constructeur, la ligne elle est juste donc c'est pas la syntaxe mais conceptuel, sur les propriété String et StringBuilder) => reponse verbale, pas ecrire du code
+  -Implémentation de la classe chrono:
+  --méthodes: start, stop, toString qui affiche le temps entre start et stop
+  --pour choper le temps qui passe: classe runtime ou system ou toolkit (3 classes super importantes)
+  -tester dans un test unitaire (junit) la classe lineaire et la classe quadratique
+  -----------------------------------------------------------------------
+  18.11.2016
+  -Faire les tests unitaires pour les classes Complex, Quadratique et Linéaire (Tester toutes les méthodes)
+  -Implémenter le fonction pow (z)^n ou n est un nombre entier et la méthode div()
+  -----------------------------------------------------------------------
+  02.12.2016
+  -Implémenter une méthode qui calcul la gravité entre n nombre complexe
+  	(Gravité entre nb complexe: point milieu entre les nb complexe (centre de gravité))
+  	(-->moyenne des nb complexe)
+  	établir un prototype qui tienne la route!
+  	
+  -tester cette méthode (test unitaire) ne pas tester l'implémentation, mais le cahier des charges
+  	(générer n nb complexe uniformément sur un cercle --> on doit obtenir le centre de ce cercle comme gravité)
+  	Zc : centre du cercle 
+  	Zi : répartit sur le cercle (i de 0 à n-1)
+  	indications:1-faire le cercle à l'origine, générer les Zi
+  				2-Zi --> même module, argument: a(i+1)=a(i)+da , da=2*PI/n
+  				3-puis translater le cercle (Zc!=0+0i)
+  				4-pour translater: additionner chaque Zi au nouveau Zc
+  
+  -(Exercice test) 
+  	1-prendre en main JExcelApi
+  	2-générer des nb complexe sur une spirale
+  	3-avec JExcelApi générer un fichier Excel avec ces nb complexe (re,im)
+  	4-faire le graphe des ces nb complexe dans Excel
+  
+  	Indication spirale: le rayon n'est pas constant, plusieurs façons de le faire varier
+  						(le plus simple peut-être: r(i+1)=r(i)+dr )	
+ ----------------------------------------------------------------------- 						
+09.12.16
+
+  - Test JUnit Pile (assert taille = 0, assert pop = ...)
+  - Tester une fois les ArrayList et une fois les LinkedList
+  		- Faire UNE méthode private void test(Pile_I pile)  --> même protocol de test pour les 2 Listes
+  		- 2 méthodes de tests où l'on fait qu'instancier
+----------------------------------------------------------------------- 	
+16.12.16
+	sortir une feuille de papier blanche, vraiment (sans rien dessus), choisir un exercice et le coder sans rien du tout
+		Identifier les dégats
+		Voir solution dans Eclipse
+		Recommencer le lendemain sur le même exercice
+		Recommencer tant qu'il y a des dégats
+		exemple:
+			Equation quadratique
+			Delta dirac
+			Exercice cantons
+			Interfaces
+		=> bilan de santé, si ce n'est pas bon, il faut aller faire du sport (hein Fatso !)
+ ----------------------------------------------------------------------- 	
+13.01.2017
+	Additionner deux tableaux 1d de même taille (1 milliard de cases) avec deux threads, case par case
+	thread 1: s'occupe de la 1ère moitié, thread2: s'occupe de la 2ème moitié
+	Indication: on va créer une classe secondaire addPortion(double[] tab,int iStart, int iStop)
+ ----------------------------------------------------------------------- 	
+27.01.2017
+	-Finir l'exercice zoo (partie 1 et 2)
+	-Tester cloneOf de la classe Tigre		
+ ----------------------------------------------------------------------- 
+ 24.02.2017
+ 	-Lire et comprendre le hello GUI
+ 	-Créer JFrameEntrainement et UseJFrameEntrainement avec paramètre d'entré n 
+ 	contenant n boutons disposé(s) en flowlayout.
+ 	Gestion de clic sur les boutons qui va afficher le nom du bouton (bouton1,bouton2, etc...)
+ 	
+ 	Indications : attribut tools un tableau de boutons ; utiliser AddActionListner
+ 	
+ 	Question : Pourquoi ActionListener n'a-t-il pas d'adapter ?
+ 	
+ 	Contrainte : tooltype sur chacun des boutons, fond du bouton vert, texte du bouton blanc
+ 	
+ 	-Afficher dans la console un message indiquant la taille de la fenêtre chaque fois que la 
+ 	fenêtre est redimensionnée. 
+ 	Indication : utiliser addComponentListener() et simplifier avec componentAdapter()
+ -----------------------------------------------------------------------
+ 03.03.2017
+ -écrire programme en java contenant 2 fenêtre, nBouton dans 1ère fenêtre, nLabel dans 2ème fenêtre
+ avec une association implicite 1 bouton -> 1 label
+ chaque label affiche le nombre de fois qu'on a cliqué sur le bouton qui lui est associé
+ Indication: l'exercice qu'on a fait en classe c'est du chenil, c'est pas de l'objet, faut une approche plus subtile/généralisable par exemple dériver la classe JButton
+ 
+ 
+ 17.03.2017
+ 
+ - Dans la classe JFrameBoxLayout : Mettre un bouton et un seul, dans la partie centrale, 
+   centré horizontalement et verticalement, les deux en même temps. 
+   ça doit être conservé même en cas de redimensionnement de la fenêtre!
+   (BoxV dans BoxH ou l'inverse)
+   
+ - Code en java avec une JFrame avec seulement 2 boutons imbirqués (JButton interieur, JButton exterieur)
+   Quand on click sur le bouton intérieur, affiche "click intérieur", et sur le bouton extérieur "click extérieur"
+   
+   Bouton interieur doit etre à droite du bouton extérieur (FlowLayout, Center à droite)
+   Bouton intérieur dans un panel, panel dans bouton extérieur.
+   
+   Swing = IMBRICATION
+   
+24.03.2017
+- Passer tout les paquages de mix avec la trilogie; JFrame, JPanel, Use.
+
+- Dans l'onglet mettre un bouton. Lorsque ce dernier est cliqué, l'onglet est supprimé.
+
+07.04.2017
+- Faire la méthode updateIndex dans JPanelRemove
+
+- Mettre dans le panel du sud un JSlider qui va permettre de thuner l'angle dAlphaAnimation
+- Mettre dans le panel du sud un JSpiner qui va gérer l'animation sleep
+- Faire une classe séparée JPanelControl qui contient les boutons + le JSlider + le JSpiner (méthode start+stop en protected)
+
+21.04.2017
+- faire la trilogie sur l'exercise d'animation (Gehrig)
+- Trouver un moyen simple de faire rouler le dégrader de l'exercise pixel
+- faire marcher le dégrader HSB
+
+-----------------------------------------------------------------------
+
+12.05.2017
+- JFrame, bouton, label
+- affiche heure dans label lors d'un clic sur bouton.
+- Indication : instancier un JFrame dans work et lui passer Horloge_I au constructeur. 
+
+- Faire fonctionner ça entre 2 JVM dans son pc
