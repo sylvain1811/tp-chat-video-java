@@ -2,6 +2,7 @@
 package ch.hearc.cours.advanced.io.reseau.rmi.horloge;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
@@ -83,6 +84,11 @@ public class PcHorloge implements Runnable
 			System.err.println("[PcHorloge]:serverSide:share failed");
 			e.printStackTrace();
 			}
+		catch (MalformedURLException e)
+			{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
 		}
 
 	/*------------------------------*\
@@ -115,6 +121,12 @@ public class PcHorloge implements Runnable
 		catch (RemoteException e)
 			{
 			System.err.println("[PcHorloge]: " + e);
+			e.printStackTrace();
+			return null;
+			}
+		catch (MalformedURLException e)
+			{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 			}
