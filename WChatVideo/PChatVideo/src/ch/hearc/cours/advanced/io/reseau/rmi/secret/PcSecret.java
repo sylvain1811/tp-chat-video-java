@@ -2,6 +2,7 @@
 package ch.hearc.cours.advanced.io.reseau.rmi.secret;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
@@ -95,6 +96,11 @@ public class PcSecret implements Runnable
 			System.err.println("[PcSecret]:serverSide:share failed");
 			e.printStackTrace();
 			}
+		catch (MalformedURLException e)
+			{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
 		}
 	/*------------------------------*\
 	|*			  Client			*|
@@ -127,6 +133,12 @@ public class PcSecret implements Runnable
 		catch (RemoteException e)
 			{
 			System.err.println("[PcSecret]: " + e);
+			e.printStackTrace();
+			return null;
+			}
+		catch (MalformedURLException e)
+			{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 			}

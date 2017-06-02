@@ -2,10 +2,14 @@
 package ch.hearc.chatvideo.reseau;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
 import org.junit.Assert;
+
+import ch.hearc.chatvideo.tools.StringCrypter;
+import ch.hearc.chatvideo.video.ImageSerializable;
 
 import com.bilat.tools.reseau.rmi.RmiTools;
 import com.bilat.tools.reseau.rmi.RmiURL;
@@ -39,11 +43,17 @@ public class Application implements Application_I ,Runnable
 	\*------------------------------*/
 
 	@Override
-	public void setText(String message)
+	public void setText(StringCrypter message)
 		{
 		// TODO Ajouter pseudo
-		Application.jPanelChat.setText(message);
+		Application.jPanelChat.setText(message.decrypter());
 
+		}
+
+	@Override
+	public void setImage(ImageSerializable image) throws RemoteException
+		{
+		// TODO Afficher l'image sur le panel webcam
 		}
 
 	/*------------------------------*\
@@ -90,7 +100,11 @@ public class Application implements Application_I ,Runnable
 			System.err.println("Erreur shareObject");
 			e.printStackTrace();
 			}
-
+		catch (MalformedURLException e)
+			{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
 		}
 
 	/*------------------------------*\
@@ -126,6 +140,13 @@ public class Application implements Application_I ,Runnable
 			e.printStackTrace();
 			return null;
 			}
+		catch (MalformedURLException e)
+			{
+			System.err.println("[Application]:fail connection remote object");
+			e.printStackTrace();
+			return null;
+			}
+
 		}
 
 	private void work(Application_I applicationRemote)
@@ -133,7 +154,7 @@ public class Application implements Application_I ,Runnable
 		try
 			{
 			// TODO envoyer les messages
-			applicationRemote.setText("Init");
+			applicationRemote.setText(new StringCrypter("Init"));
 
 			}
 		catch (RemoteException e)
