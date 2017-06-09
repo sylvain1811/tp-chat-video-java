@@ -2,14 +2,27 @@
 package ch.hearc.chatvideo.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.junit.Assert;
+
+import ch.hearc.chatvideo.reseau.Application;
+import ch.hearc.chatvideo.tools.StringCrypter;
+import ch.hearc.chatvideo.video.JPanelWebcam;
+
+/*---------------------------------------------------------------*\
+|*							SINGLETON							 *|
+\*---------------------------------------------------------------*/
 
 public class JPanelChat extends JPanel
 	{
@@ -18,7 +31,7 @@ public class JPanelChat extends JPanel
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JPanelChat()
+	private JPanelChat()
 		{
 		geometry();
 		control();
@@ -29,6 +42,29 @@ public class JPanelChat extends JPanel
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
+	public synchronized void setText(String message)
+		{
+		// TODO Afficher un nouveau message (envoyé ou reçu)
+		System.out.println("setText called : " + chatHistory.getText() + message);
+		chatHistory.setText(chatHistory.getText() + message);
+		}
+
+	public synchronized void setImage(BufferedImage bufferedImage)
+		{
+		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
+		this.jPanelWebcamDist.setImage(bufferedImage);
+		this.repaint();
+		this.revalidate();
+		}
+
+	public synchronized void setImageLocal(BufferedImage bufferedImage)
+		{
+		// TODO Afficher l'image dans le panel, celui pour la webcam local
+		this.jPanelWebcamLocal.setImage(bufferedImage);
+		this.repaint();
+		this.revalidate();
+		}
+
 	/*------------------------------*\
 	|*				Set				*|
 	\*------------------------------*/
@@ -36,6 +72,29 @@ public class JPanelChat extends JPanel
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
+
+	/*------------------------------*\
+	|*			  Static			*|
+	\*------------------------------*/
+
+	public static synchronized void init(String pseudo)
+		{
+		JPanelChat.pseudo = pseudo;
+		}
+
+	public static synchronized JPanelChat getInstance()
+		{
+		Assert.assertTrue(pseudo != null);
+		if (INSTANCE == null)
+			{
+			return new JPanelChat();
+			}
+		else
+			{
+			return INSTANCE;
+			}
+
+		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
@@ -45,23 +104,23 @@ public class JPanelChat extends JPanel
 		{
 		// JComponent : Instanciation
 
-		jPanelVideo = new JPanel();
-		jPanelVideo.setPreferredSize(new Dimension(900, 500));
+		jPanelVideos = new JPanel();
+		jPanelVideos.setPreferredSize(new Dimension(1200, 700));
 
-		jPanel1 = new JPanel();
-		jPanel1.setPreferredSize(new Dimension(400, 500));
-		jPanel1.setBackground(Color.RED);
+		jPanelWebcamLocal = new JPanelWebcam();
+		jPanelWebcamLocal.setPreferredSize(new Dimension(600, 700));
+		//jPanelWebcamLocal.setBackground(Color.RED);
 
-		jPanel2 = new JPanel();
-		jPanel2.setPreferredSize(new Dimension(400, 500));
-		jPanel2.setBackground(Color.BLACK);
+		jPanelWebcamDist = new JPanelWebcam();
+		jPanelWebcamDist.setPreferredSize(new Dimension(600, 700));
+		//jPanelWebcamDist.setBackground(Color.BLACK);
 
 		jPanelSaisie = new JPanel();
 
 		jPanelHistorique = new JPanel();
-		jPanelHistorique.setPreferredSize(new Dimension(900,150));
+		jPanelHistorique.setPreferredSize(new Dimension(900, 150));
 
-		chatHistory = new JTextArea("TEST");
+		chatHistory = new JTextArea("<Empty>");
 		chatHistory.setPreferredSize(jPanelHistorique.getPreferredSize());
 
 		messageInput = new JTextField();
@@ -70,9 +129,9 @@ public class JPanelChat extends JPanel
 
 		FlowLayout flowLayout1 = new FlowLayout();
 
-		jPanelVideo.setLayout(flowLayout1);
-		jPanelVideo.add(jPanel1);
-		jPanelVideo.add(jPanel2);
+		jPanelVideos.setLayout(flowLayout1);
+		jPanelVideos.add(jPanelWebcamLocal);
+		jPanelVideos.add(jPanelWebcamDist);
 
 		FlowLayout flowLayout2 = new FlowLayout();
 
@@ -80,7 +139,6 @@ public class JPanelChat extends JPanel
 		jPanelSaisie.add(chatHistory);
 		jPanelSaisie.add(messageInput);
 		jPanelSaisie.add(sendButton);
-
 
 		FlowLayout flowLayout3 = new FlowLayout();
 		jPanelHistorique.setLayout(flowLayout3);
@@ -96,7 +154,7 @@ public class JPanelChat extends JPanel
 			}
 
 		// JComponent : add
-		add(jPanelVideo, BorderLayout.NORTH);
+		add(jPanelVideos, BorderLayout.NORTH);
 		add(jPanelHistorique, BorderLayout.CENTER);
 		add(jPanelSaisie, BorderLayout.SOUTH);
 
@@ -104,22 +162,49 @@ public class JPanelChat extends JPanel
 
 	private void control()
 		{
-		// rien
+		sendButton.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JPanelChat.this.setText(pseudo + " : " + messageInput.getText() + "\n");
+				StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + messageInput.getText() + "\n");
+				try
+					{
+					Application.getInstance().getRemote().setText(messageCrypter);
+					}
+				catch (RemoteException e1)
+					{
+					// TODO Traiter erreur remote setText
+					e1.printStackTrace();
+					}
+				finally
+					{
+					messageInput.setText("");
+					}
+				}
+			});
 		}
 
 	private void appearance()
 		{
-		setSize(1000, 800);
+		setSize(1300, 1000);
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
+	// Inputs
+	// TODO enlever public
+	public static String pseudo = null;
+
 	// Tools
-	private JPanel jPanelVideo;
-	private JPanel jPanel1;
-	private JPanel jPanel2;
+	private static JPanelChat INSTANCE = null;
+	private JPanel jPanelVideos;
+	private JPanelWebcam jPanelWebcamLocal;
+	private JPanelWebcam jPanelWebcamDist;
 	private JPanel jPanelSaisie;
 	private JPanel jPanelHistorique;
 	private JTextArea chatHistory;

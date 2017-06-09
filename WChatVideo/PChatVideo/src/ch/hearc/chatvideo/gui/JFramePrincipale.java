@@ -20,25 +20,13 @@ public class JFramePrincipale extends JFrame
 		}
 
 	/*------------------------------------------------------------------*\
-	|*							Methodes Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
-	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
 	private void geometry()
 		{
 		// JComponent : Instanciation
-		jPanelPrincipale = new JPanelPrincipal(this);
+		jPanelPrincipal = new JPanelPrincipal(this);
 
 		// Layout : Specification
 			{
@@ -50,7 +38,7 @@ public class JFramePrincipale extends JFrame
 			}
 
 		// JComponent : add
-		add(jPanelPrincipale,BorderLayout.CENTER);
+		add(jPanelPrincipal, BorderLayout.CENTER);
 		}
 
 	private void control()
@@ -60,7 +48,7 @@ public class JFramePrincipale extends JFrame
 
 	private void appearance()
 		{
-		setSize(jPanelPrincipale.getSize());
+		setSize(jPanelPrincipal.getSize());
 		setLocationRelativeTo(null); // frame centrer
 		setVisible(true); // last!
 		}
@@ -70,6 +58,6 @@ public class JFramePrincipale extends JFrame
 	\*------------------------------------------------------------------*/
 
 	// Tools
-	private JPanelPrincipal jPanelPrincipale;
+	private JPanelPrincipal jPanelPrincipal;
 
 	}

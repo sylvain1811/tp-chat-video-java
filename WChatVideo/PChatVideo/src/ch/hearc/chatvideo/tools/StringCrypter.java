@@ -1,9 +1,10 @@
 
 package ch.hearc.chatvideo.tools;
 
-public class StringCrypter
+import java.io.Serializable;
+
+public class StringCrypter implements Serializable
 	{
-	// TODO : Implémenter cette classe
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/

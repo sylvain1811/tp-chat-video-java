@@ -12,10 +12,30 @@ import javax.imageio.ImageIO;
 public class ImageSerializable implements Serializable
 	{
 
+	/*------------------------------------------------------------------*\
+	|*							Constructeurs							*|
+	\*------------------------------------------------------------------*/
+
 	public ImageSerializable(BufferedImage image)
 		{
 		this.image = image;
 		}
+	/*------------------------------------------------------------------*\
+	|*							Methodes Public							*|
+	\*------------------------------------------------------------------*/
+
+	public BufferedImage getImage()
+		{
+		return this.image;
+		}
+
+	public void setImage(BufferedImage image)
+		{
+		this.image = image;
+		}
+	/*------------------------------------------------------------------*\
+	|*							Methodes Private						*|
+	\*------------------------------------------------------------------*/
 
 	/**
 	* Customisation sérialisation
@@ -35,15 +55,9 @@ public class ImageSerializable implements Serializable
 		this.image = ImageIO.read(ois);
 		}
 
-	public BufferedImage getImage()
-		{
-		return this.image;
-		}
-
-	public void setImage(BufferedImage image)
-		{
-		this.image = image;
-		}
+	/*------------------------------------------------------------------*\
+	|*							Attributs Private						*|
+	\*------------------------------------------------------------------*/
 
 	// transient -> l'attribut ne sera pas sérialisé
 	// Rappel: BufferedImage n'est pas sérialisable

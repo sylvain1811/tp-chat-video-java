@@ -64,7 +64,7 @@ public class JPanelPrincipal extends JPanel
 
 	private void control()
 		{
-
+		// Rien
 		}
 
 	private void appearance()

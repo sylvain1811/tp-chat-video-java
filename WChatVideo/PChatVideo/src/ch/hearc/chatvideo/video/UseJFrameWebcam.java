@@ -1,8 +1,6 @@
 
 package ch.hearc.chatvideo.video;
 
-
-
 public class UseJFrameWebcam
 	{
 
@@ -20,9 +18,4 @@ public class UseJFrameWebcam
 		new JFrameWebcam();
 		}
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
-
 	}
-

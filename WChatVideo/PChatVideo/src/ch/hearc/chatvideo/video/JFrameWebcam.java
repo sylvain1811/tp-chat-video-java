@@ -5,9 +5,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
-
 public class JFrameWebcam extends JFrame
 	{
 
@@ -41,8 +38,11 @@ public class JFrameWebcam extends JFrame
 	private void geometry()
 		{
 		// JComponent : Instanciation
-		Webcam webcam = CustomWebcam.createWebcam();
-		WebcamPanel webCamPanel = CustomWebcam.createWebcamPanel(webcam);
+		JPanelWebcam webCamPanel = CustomWebcam.createWebcamPanel();
+		//Application application = Application.getInstance();
+		ImageWorker worker = new ImageWorker();
+		Thread t = new Thread(worker);
+		t.start();
 		// Layout : Specification
 			{
 			BorderLayout borderLayout = new BorderLayout();
