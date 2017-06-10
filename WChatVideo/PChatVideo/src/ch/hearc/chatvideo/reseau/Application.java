@@ -106,7 +106,8 @@ public class Application implements Application_I ,Runnable
 			//RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, SettingsRMI.APPLICATION_PORT);
 
 			//  On prend la première adresse ETH pour se partager
-			List<InetAddress> adresses = NetworkTools.localhostEth();
+			List<InetAddress> adresses = NetworkTools.localhost("");
+			System.out.println(adresses);
 			System.out.println(adresses.get(0));
 			String id = "";
 			if (JPanelChat.pseudo.contains("syl"))
