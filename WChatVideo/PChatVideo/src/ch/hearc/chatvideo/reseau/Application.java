@@ -53,7 +53,6 @@ public class Application implements Application_I ,Runnable
 	@Override
 	public void setText(StringCrypter message)
 		{
-		System.out.println("setText from rmi : " + message.decrypter());
 		JPanelChat.getInstance().setText(message.decrypter());
 		}
 

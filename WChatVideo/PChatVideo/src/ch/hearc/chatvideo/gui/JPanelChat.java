@@ -45,7 +45,7 @@ public class JPanelChat extends JPanel
 	public synchronized void setText(String message)
 		{
 		// TODO Afficher un nouveau message (envoyé ou reçu)
-		System.out.println("setText called : " + chatHistory.getText() + message);
+		// System.out.println("setText called : " + chatHistory.getText() + message);
 		chatHistory.setText(chatHistory.getText() + message);
 		}
 
@@ -87,13 +87,9 @@ public class JPanelChat extends JPanel
 		Assert.assertTrue(pseudo != null);
 		if (INSTANCE == null)
 			{
-			return new JPanelChat();
+			INSTANCE = new JPanelChat();
 			}
-		else
-			{
-			return INSTANCE;
-			}
-
+		return INSTANCE;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -136,7 +132,6 @@ public class JPanelChat extends JPanel
 		FlowLayout flowLayout2 = new FlowLayout();
 
 		jPanelSaisie.setLayout(flowLayout2);
-		jPanelSaisie.add(chatHistory);
 		jPanelSaisie.add(messageInput);
 		jPanelSaisie.add(sendButton);
 
@@ -168,7 +163,7 @@ public class JPanelChat extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JPanelChat.this.setText(pseudo + " : " + messageInput.getText() + "\n");
+				JPanelChat.getInstance().setText(pseudo + " : " + messageInput.getText() + "\n");
 				StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + messageInput.getText() + "\n");
 				try
 					{
