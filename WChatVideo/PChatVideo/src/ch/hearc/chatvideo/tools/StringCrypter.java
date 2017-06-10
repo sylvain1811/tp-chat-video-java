@@ -47,4 +47,5 @@ public class StringCrypter implements Serializable
 	\*------------------------------------------------------------------*/
 
 	private String message;
+	private byte[] encryptedMessage;
 	}

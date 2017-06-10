@@ -38,7 +38,7 @@ public class ImageWorker implements Runnable
 		{
 		this.webcam = CustomWebcam.createWebcam();
 
-		while(true) // TODO Changer condition (style "tant que connecté")
+		while(Application.getInstance().isConnected()) // TODO Changer condition (style "tant que connecté")
 			{
 			if (webcam.isOpen())
 				{
@@ -71,6 +71,7 @@ public class ImageWorker implements Runnable
 			catch (RemoteException e1)
 				{
 				e1.printStackTrace();
+				JPanelChat.getInstance().traiterErreurReseau();
 				}
 			catch (InterruptedException e)
 				{

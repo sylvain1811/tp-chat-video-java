@@ -13,4 +13,5 @@ public interface Application_I extends Remote
 	public void setText(StringCrypter message) throws RemoteException;
 
 	public void setImage(ImageSerializable image) throws RemoteException;
+
 	}

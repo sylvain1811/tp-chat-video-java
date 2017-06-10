@@ -62,6 +62,11 @@ public class Application implements Application_I ,Runnable
 		JPanelChat.getInstance().setImage(imageSerialisee.getImage());
 		}
 
+	public synchronized void setConnected(boolean connected)
+		{
+		this.isConnected = connected;
+		}
+
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
@@ -69,6 +74,11 @@ public class Application implements Application_I ,Runnable
 	public Application_I getRemote()
 		{
 		return this.remote;
+		}
+
+	public boolean isConnected()
+		{
+		return this.isConnected;
 		}
 
 	/*------------------------------*\
@@ -145,6 +155,7 @@ public class Application implements Application_I ,Runnable
 	private void clientSide()
 		{
 		this.remote = connect();
+		this.isConnected = true;
 		// work();
 		}
 
@@ -214,6 +225,8 @@ public class Application implements Application_I ,Runnable
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
+
+	private boolean isConnected = false;
 
 	/*------------------------------*\
 	|*			  Static			*|

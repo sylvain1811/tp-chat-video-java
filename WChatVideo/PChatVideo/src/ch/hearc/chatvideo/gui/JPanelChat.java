@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -54,16 +55,24 @@ public class JPanelChat extends JPanel
 		{
 		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
 		this.jPanelWebcamDist.setImage(bufferedImage);
-		this.repaint();
-		this.revalidate();
+		//this.repaint();
+		//this.revalidate();
 		}
 
 	public synchronized void setImageLocal(BufferedImage bufferedImage)
 		{
 		// TODO Afficher l'image dans le panel, celui pour la webcam local
 		this.jPanelWebcamLocal.setImage(bufferedImage);
-		this.repaint();
-		this.revalidate();
+		//this.repaint();
+		//this.revalidate();
+		}
+
+	public synchronized void traiterErreurReseau()
+		{
+		// Affiche un message et indique que la remote est déconnectée
+		JOptionPane.showMessageDialog(this, "Une déconnexion est apparue.", "Erreur", JOptionPane.ERROR_MESSAGE);
+		Application.getInstance().setConnected(false);
+		// TODO Retour au menu de connexion
 		}
 
 	/*------------------------------*\
@@ -174,6 +183,7 @@ public class JPanelChat extends JPanel
 				catch (RemoteException e1)
 					{
 					// TODO Traiter erreur remote setText
+					JPanelChat.getInstance().traiterErreurReseau();
 					e1.printStackTrace();
 					}
 				finally
