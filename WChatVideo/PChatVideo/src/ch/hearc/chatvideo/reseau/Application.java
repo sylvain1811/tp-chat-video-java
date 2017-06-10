@@ -110,42 +110,52 @@ public class Application implements Application_I ,Runnable
 
 	private void serverSide()
 		{
-		try
+		Thread serverSide = new Thread(new Runnable()
 			{
-			//RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, SettingsRMI.APPLICATION_PORT);
 
-			//  On prend la première adresse ETH pour se partager
-			List<InetAddress> adresses = NetworkTools.localhost("");
-			System.out.println(adresses);
-			System.out.println(adresses.get(0));
-			String id = "";
-			if (JPanelChat.pseudo.contains("syl"))
+			@Override
+			public void run()
 				{
-				id = SettingsRMI.APPLICATION_ID + 1;
-				}
-			else
-				{
-				id = SettingsRMI.APPLICATION_ID + 2;
-				}
-			RmiURL rmiURL = new RmiURL(id, adresses.get(0), SettingsRMI.APPLICATION_PORT);
-			RmiTools.shareObject(this, rmiURL);
+				try
+					{
+					//RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, SettingsRMI.APPLICATION_PORT);
 
-			}
-		catch (RemoteException e)
-			{
-			System.err.println("Erreur shareObject");
-			e.printStackTrace();
-			}
-		catch (MalformedURLException e)
-			{
-			// TODO Traiter URL mal formée
-			e.printStackTrace();
-			}
-		catch (SocketException e)
-			{
-			// TODO Gérer erreur localhostEth()
-			e.printStackTrace();
-			}
+					//  On prend la première adresse ETH pour se partager
+					List<InetAddress> adresses = NetworkTools.localhost("");
+					System.out.println(adresses);
+					System.out.println(adresses.get(0));
+					String id = "";
+					if (JPanelChat.pseudo.contains("syl"))
+						{
+						id = SettingsRMI.APPLICATION_ID + 1;
+						}
+					else
+						{
+						id = SettingsRMI.APPLICATION_ID + 2;
+						}
+					RmiURL rmiURL = new RmiURL(id, adresses.get(0), SettingsRMI.APPLICATION_PORT);
+					RmiTools.shareObject(Application.this, rmiURL);
+
+					}
+				catch (RemoteException e)
+					{
+					System.err.println("Erreur shareObject");
+					e.printStackTrace();
+					}
+				catch (MalformedURLException e)
+					{
+					// TODO Traiter URL mal formée
+					e.printStackTrace();
+					}
+				catch (SocketException e)
+					{
+					// TODO Gérer erreur localhostEth()
+					e.printStackTrace();
+					}
+				}
+			});
+		serverSide.start();
+
 		}
 
 	/*------------------------------*\
@@ -154,8 +164,16 @@ public class Application implements Application_I ,Runnable
 
 	private void clientSide()
 		{
-		this.remote = connect();
-		this.isConnected = true;
+		Thread clientSide = new Thread(new Runnable()
+			{
+
+			@Override
+			public void run()
+				{
+				Application.this.remote = connect();
+				}
+			});
+		clientSide.start();
 		// work();
 		}
 
