@@ -124,7 +124,9 @@ public class JPanelWebcam extends JPanel
 		{
 		if (image != null)
 			{
-			g2d.drawImage(this.image, 0, 0, null);
+			// TODO Scale image en fonction de la taille de la fenetre (remplacer 600, 350)
+			// Idée : écouter les redimensionnement des panels, et adapter
+			g2d.drawImage(this.image, 0, 0, 600, 350, null);
 			}
 		}
 

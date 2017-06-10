@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ch.hearc.chatvideo.reseau.Application;
+import ch.hearc.chatvideo.video.ImageWorker;
 
 public class JPanelConfig extends JPanel
 	{
@@ -104,7 +105,7 @@ public class JPanelConfig extends JPanel
 				new Thread(Application.getInstance()).start();
 
 				// Lancement de la partie webcam
-				// new Thread(new ImageWorker()).start();
+				new Thread(new ImageWorker()).start();
 				}
 			});
 		}

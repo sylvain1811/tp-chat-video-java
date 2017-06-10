@@ -2,6 +2,7 @@
 package ch.hearc.chatvideo.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -104,11 +105,12 @@ public class JPanelChat extends JPanel
 		jPanelVideos.setPreferredSize(new Dimension(1200, 700));
 
 		jPanelWebcamLocal = new JPanelWebcam();
-		jPanelWebcamLocal.setPreferredSize(new Dimension(600, 700));
+		jPanelWebcamLocal.setPreferredSize(new Dimension(600, 300));
 		//jPanelWebcamLocal.setBackground(Color.RED);
 
 		jPanelWebcamDist = new JPanelWebcam();
-		jPanelWebcamDist.setPreferredSize(new Dimension(600, 700));
+		jPanelWebcamDist.setPreferredSize(new Dimension(600, 300));
+		jPanelWebcamDist.setBackground(Color.BLUE);
 		//jPanelWebcamDist.setBackground(Color.BLACK);
 
 		jPanelSaisie = new JPanel();

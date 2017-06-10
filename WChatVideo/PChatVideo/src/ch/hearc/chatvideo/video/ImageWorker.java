@@ -61,15 +61,16 @@ public class ImageWorker implements Runnable
 			try
 				{
 				// Envoi de l'image par le réseau
-				Application.getInstance().getRemote().setImage(serialImg);
+				if (Application.getInstance().getRemote() != null)
+					{
+					Application.getInstance().getRemote().setImage(serialImg);
+					}
+				// On attend 1/60 secondes avant la prochaine caputre d'image
+				Thread.sleep(1000 / 60);
 				}
 			catch (RemoteException e1)
 				{
 				e1.printStackTrace();
-				}
-			try
-				{
-				Thread.sleep(1000 / 60);
 				}
 			catch (InterruptedException e)
 				{
