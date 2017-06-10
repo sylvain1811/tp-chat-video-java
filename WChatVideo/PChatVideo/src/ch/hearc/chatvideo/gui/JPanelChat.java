@@ -175,21 +175,31 @@ public class JPanelChat extends JPanel
 			public void actionPerformed(ActionEvent e)
 				{
 				JPanelChat.getInstance().setText(pseudo + " : " + messageInput.getText() + "\n");
-				StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + messageInput.getText() + "\n");
-				try
+				Thread sendMessage = new Thread(new Runnable()
 					{
-					Application.getInstance().getRemote().setText(messageCrypter);
-					}
-				catch (RemoteException e1)
-					{
-					// TODO Traiter erreur remote setText
-					JPanelChat.getInstance().traiterErreurReseau();
-					e1.printStackTrace();
-					}
-				finally
-					{
-					messageInput.setText("");
-					}
+
+					@Override
+					public void run()
+						{
+						StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + messageInput.getText() + "\n");
+						try
+							{
+							if (Application.getInstance().getRemote() != null)
+								{
+								Application.getInstance().getRemote().setText(messageCrypter);
+								}
+							}
+						catch (RemoteException e1)
+							{
+							// TODO Traiter erreur remote setText
+							JPanelChat.getInstance().traiterErreurReseau();
+							e1.printStackTrace();
+							}
+						}
+					});
+
+				sendMessage.start();
+				messageInput.setText("");
 				}
 			});
 		}
