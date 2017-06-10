@@ -55,16 +55,16 @@ public class JPanelChat extends JPanel
 		{
 		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
 		this.jPanelWebcamDist.setImage(bufferedImage);
-		//this.repaint();
-		//this.revalidate();
+		this.repaint();
+		this.revalidate();
 		}
 
 	public synchronized void setImageLocal(BufferedImage bufferedImage)
 		{
 		// TODO Afficher l'image dans le panel, celui pour la webcam local
 		this.jPanelWebcamLocal.setImage(bufferedImage);
-		//this.repaint();
-		//this.revalidate();
+		this.repaint();
+		this.revalidate();
 		}
 
 	public synchronized void traiterErreurReseau()
@@ -174,14 +174,16 @@ public class JPanelChat extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JPanelChat.getInstance().setText(pseudo + " : " + messageInput.getText() + "\n");
+				final String newMessage = messageInput.getText();
+
+				JPanelChat.getInstance().setText(pseudo + " : " + newMessage + "\n");
 				Thread sendMessage = new Thread(new Runnable()
 					{
 
 					@Override
 					public void run()
 						{
-						StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + messageInput.getText() + "\n");
+						StringCrypter messageCrypter = new StringCrypter(pseudo + " : " + newMessage + "\n");
 						try
 							{
 							if (Application.getInstance().getRemote() != null)
