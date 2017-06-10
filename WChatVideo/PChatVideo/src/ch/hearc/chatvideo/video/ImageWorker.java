@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.rmi.RemoteException;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamLockException;
 
 import ch.hearc.chatvideo.gui.JPanelChat;
 import ch.hearc.chatvideo.reseau.Application;
@@ -36,7 +37,14 @@ public class ImageWorker implements Runnable
 	@Override
 	public void run()
 		{
-		this.webcam = CustomWebcam.createWebcam();
+		try
+			{
+			this.webcam = CustomWebcam.createWebcam();
+			}
+		catch (WebcamLockException e)
+			{
+			// TODO Afficher un message car la caméra est déjà utilisée
+			}
 
 		while(true) // TODO Changer condition (style "tant que connecté")
 			{
@@ -57,28 +65,44 @@ public class ImageWorker implements Runnable
 			// Affichage de l'image sur le panel local, accès par Singleton
 			JPanelChat.getInstance().setImageLocal(image);
 
-			if (Application.getInstance().isConnected())
+			// Envoi de l'image par le réseau
+			Thread sendImage = new Thread(new Runnable()
 				{
-				ImageSerializable serialImg = new ImageSerializable(image);
-				try
+
+				@Override
+				public void run()
 					{
-					// Envoi de l'image par le réseau
-					if (Application.getInstance().getRemote() != null)
+					if (Application.getInstance().isConnected())
 						{
-						Application.getInstance().getRemote().setImage(serialImg);
+						ImageSerializable serialImg = new ImageSerializable(image);
+						try
+							{
+							if (Application.getInstance().getRemote() != null)
+								{
+								Application.getInstance().getRemote().setImage(serialImg);
+								}
+
+							}
+						catch (RemoteException e1)
+							{
+							e1.printStackTrace();
+							JPanelChat.getInstance().traiterErreurReseau();
+							}
 						}
-					// On attend 1/60 secondes avant la prochaine caputre d'image
-					Thread.sleep(1000 / 60);
 					}
-				catch (RemoteException e1)
-					{
-					e1.printStackTrace();
-					JPanelChat.getInstance().traiterErreurReseau();
-					}
-				catch (InterruptedException e)
-					{
-					e.printStackTrace();
-					}
+				});
+
+			sendImage.start();
+
+			try
+				{
+				// On attend 1/60 secondes avant la prochaine caputre d'image
+				Thread.sleep(1000 / 60);
+				}
+			catch (InterruptedException e)
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				}
 			}
 
