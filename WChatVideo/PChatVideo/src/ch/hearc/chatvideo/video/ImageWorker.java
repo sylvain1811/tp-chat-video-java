@@ -38,7 +38,7 @@ public class ImageWorker implements Runnable
 		{
 		this.webcam = CustomWebcam.createWebcam();
 
-		while(Application.getInstance().isConnected()) // TODO Changer condition (style "tant que connecté")
+		while(true) // TODO Changer condition (style "tant que connecté")
 			{
 			if (webcam.isOpen())
 				{
@@ -57,25 +57,28 @@ public class ImageWorker implements Runnable
 			// Affichage de l'image sur le panel local, accès par Singleton
 			JPanelChat.getInstance().setImageLocal(image);
 
-			ImageSerializable serialImg = new ImageSerializable(image);
-			try
+			if (Application.getInstance().isConnected())
 				{
-				// Envoi de l'image par le réseau
-				if (Application.getInstance().getRemote() != null)
+				ImageSerializable serialImg = new ImageSerializable(image);
+				try
 					{
-					Application.getInstance().getRemote().setImage(serialImg);
+					// Envoi de l'image par le réseau
+					if (Application.getInstance().getRemote() != null)
+						{
+						Application.getInstance().getRemote().setImage(serialImg);
+						}
+					// On attend 1/60 secondes avant la prochaine caputre d'image
+					Thread.sleep(1000 / 60);
 					}
-				// On attend 1/60 secondes avant la prochaine caputre d'image
-				Thread.sleep(1000 / 60);
-				}
-			catch (RemoteException e1)
-				{
-				e1.printStackTrace();
-				JPanelChat.getInstance().traiterErreurReseau();
-				}
-			catch (InterruptedException e)
-				{
-				e.printStackTrace();
+				catch (RemoteException e1)
+					{
+					e1.printStackTrace();
+					JPanelChat.getInstance().traiterErreurReseau();
+					}
+				catch (InterruptedException e)
+					{
+					e.printStackTrace();
+					}
 				}
 			}
 
