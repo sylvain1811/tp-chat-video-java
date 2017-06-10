@@ -217,10 +217,12 @@ public class JPanelConfig extends JPanel
 
 				// Lancement de l'Application (la partie réseau)
 				Application.init(textInputIpAdressDist.getText());
-				new Thread(Application.getInstance()).start();
+				Thread reseau = new Thread(Application.getInstance());
+				reseau.start();
 
 				// Lancement de la partie webcam
-				new Thread(new ImageWorker()).start();
+				Thread webcam = new Thread(new ImageWorker());
+				webcam.start();
 				}
 			});
 		}

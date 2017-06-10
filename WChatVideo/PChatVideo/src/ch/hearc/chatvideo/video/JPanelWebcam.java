@@ -20,7 +20,7 @@ public class JPanelWebcam extends JPanel
 		{
 		isGrey = true;
 		isCamDisplayed = false;
-		IsFpsDiplayed = false;
+		isFpsDiplayed = false;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -65,7 +65,7 @@ public class JPanelWebcam extends JPanel
 
 	public void toggleFPSDisplayed()
 		{
-		IsFpsDiplayed = !IsFpsDiplayed;
+		isFpsDiplayed = !isFpsDiplayed;
 		}
 
 	/*------------------------------*\
@@ -138,5 +138,5 @@ public class JPanelWebcam extends JPanel
 	private BufferedImage image;
 	private boolean isCamDisplayed;
 	private boolean isGrey;
-	private boolean IsFpsDiplayed;
+	private boolean isFpsDiplayed;
 	}

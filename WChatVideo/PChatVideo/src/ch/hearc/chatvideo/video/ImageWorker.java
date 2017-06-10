@@ -45,7 +45,6 @@ public class ImageWorker implements Runnable
 			{
 			// TODO Afficher un message car la caméra est déjà utilisée
 			}
-
 		while(true) // TODO Changer condition (style "tant que connecté")
 			{
 			if (webcam.isOpen())
@@ -54,6 +53,50 @@ public class ImageWorker implements Runnable
 				if (webcam.isImageNew())
 					{
 					image = webcam.getImage();
+					// Affichage de l'image sur le panel local, accès par Singleton
+					JPanelChat.getInstance().setImageLocal(image);
+
+					// Envoi de l'image par le réseau
+					imageSerializable = new ImageSerializable(image);
+					try
+						{
+						if (Application.getInstance().getRemote() != null)
+							{
+							Application.getInstance().getRemote().setImage(imageSerializable);
+							}
+						}
+					catch (RemoteException e1)
+						{
+						System.out.println("Erreur remote");
+						e1.printStackTrace();
+						}
+					//			Thread sendImage = new Thread(new Runnable()
+					//				{
+					//
+					//				@Override
+					//				public void run()
+					//					{
+					//					if (Application.getInstance().isConnected())
+					//						{
+					//						ImageSerializable serialImg = new ImageSerializable(image);
+					//						try
+					//							{
+					//							if (Application.getInstance().getRemote() != null)
+					//								{
+					//								Application.getInstance().getRemote().setImage(serialImg);
+					//								}
+					//
+					//							}
+					//						catch (RemoteException e1)
+					//							{
+					//							e1.printStackTrace();
+					//							JPanelChat.getInstance().traiterErreurReseau();
+					//							}
+					//						}
+					//					}
+					//				});
+					//
+					//			sendImage.start();
 					}
 				}
 			else
@@ -61,38 +104,6 @@ public class ImageWorker implements Runnable
 				//ici on pourrait mettre une image d'erreur
 				//image = ;
 				}
-
-			// Affichage de l'image sur le panel local, accès par Singleton
-			JPanelChat.getInstance().setImageLocal(image);
-
-			// Envoi de l'image par le réseau
-			Thread sendImage = new Thread(new Runnable()
-				{
-
-				@Override
-				public void run()
-					{
-					if (Application.getInstance().isConnected())
-						{
-						ImageSerializable serialImg = new ImageSerializable(image);
-						try
-							{
-							if (Application.getInstance().getRemote() != null)
-								{
-								Application.getInstance().getRemote().setImage(serialImg);
-								}
-
-							}
-						catch (RemoteException e1)
-							{
-							e1.printStackTrace();
-							JPanelChat.getInstance().traiterErreurReseau();
-							}
-						}
-					}
-				});
-
-			sendImage.start();
 
 			try
 				{
@@ -115,4 +126,5 @@ public class ImageWorker implements Runnable
 	// Tools
 	private Webcam webcam;
 	private BufferedImage image;
+	private ImageSerializable imageSerializable;
 	}
