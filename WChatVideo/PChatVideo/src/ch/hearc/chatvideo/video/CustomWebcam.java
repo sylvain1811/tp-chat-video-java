@@ -13,7 +13,18 @@ public class CustomWebcam
 	|*			  Static			*|
 	\*------------------------------*/
 
-	public static Webcam createWebcam()
+	private static Webcam INSTANCE = null;
+
+	public static Webcam getInstance()
+		{
+		if (INSTANCE == null)
+			{
+			INSTANCE = createWebcam();
+			}
+		return INSTANCE;
+		}
+
+	private static Webcam createWebcam()
 		{
 		Webcam webcam = Webcam.getDefault();
 		Dimension resolutionVoulue = new Dimension(1920, 1080);

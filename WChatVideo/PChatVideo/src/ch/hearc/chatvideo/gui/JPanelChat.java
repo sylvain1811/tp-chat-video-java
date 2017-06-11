@@ -20,7 +20,9 @@ import org.junit.Assert;
 
 import ch.hearc.chatvideo.reseau.Application;
 import ch.hearc.chatvideo.tools.StringCrypter;
+import ch.hearc.chatvideo.video.CustomWebcam;
 import ch.hearc.chatvideo.video.JPanelWebcam;
+import ch.hearc.chatvideo.video.JPanelWebcamDist;
 
 /*---------------------------------------------------------------*\
 |*							SINGLETON							 *|
@@ -55,16 +57,16 @@ public class JPanelChat extends JPanel
 		{
 		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
 		this.jPanelWebcamDist.setImage(bufferedImage);
-		this.repaint();
-		this.revalidate();
+		jPanelWebcamDist.repaint();
+		jPanelWebcamDist.revalidate();
 		}
 
 	public synchronized void setImageLocal(BufferedImage bufferedImage)
 		{
 		// TODO Afficher l'image dans le panel, celui pour la webcam local
 		this.jPanelWebcamLocal.setImage(bufferedImage);
-		this.repaint();
-		this.revalidate();
+		jPanelWebcamLocal.repaint();
+		jPanelWebcamLocal.revalidate();
 		}
 
 	public synchronized void traiterErreurReseau()
@@ -82,6 +84,11 @@ public class JPanelChat extends JPanel
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
+
+	public JPanelWebcam getPanelWebcam()
+		{
+		return this.jPanelWebcamLocal;
+		}
 
 	/*------------------------------*\
 	|*			  Static			*|
@@ -113,11 +120,11 @@ public class JPanelChat extends JPanel
 		jPanelVideos = new JPanel();
 		jPanelVideos.setPreferredSize(new Dimension(1200, 700));
 
-		jPanelWebcamLocal = new JPanelWebcam();
+		jPanelWebcamLocal = CustomWebcam.createWebcamPanel();
 		jPanelWebcamLocal.setPreferredSize(new Dimension(600, 300));
 		//jPanelWebcamLocal.setBackground(Color.RED);
 
-		jPanelWebcamDist = new JPanelWebcam();
+		jPanelWebcamDist = new JPanelWebcamDist();
 		jPanelWebcamDist.setPreferredSize(new Dimension(600, 300));
 		jPanelWebcamDist.setBackground(Color.BLUE);
 		//jPanelWebcamDist.setBackground(Color.BLACK);
@@ -127,7 +134,7 @@ public class JPanelChat extends JPanel
 		jPanelHistorique = new JPanel();
 		jPanelHistorique.setPreferredSize(new Dimension(900, 150));
 
-		chatHistory = new JTextArea("<Empty>");
+		chatHistory = new JTextArea();
 		chatHistory.setPreferredSize(jPanelHistorique.getPreferredSize());
 
 		messageInput = new JTextField();

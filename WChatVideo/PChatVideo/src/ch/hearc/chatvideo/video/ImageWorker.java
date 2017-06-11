@@ -2,13 +2,11 @@
 package ch.hearc.chatvideo.video;
 
 import java.awt.image.BufferedImage;
-import java.rmi.RemoteException;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamLockException;
 
 import ch.hearc.chatvideo.gui.JPanelChat;
-import ch.hearc.chatvideo.reseau.Application;
 
 public class ImageWorker implements Runnable
 	{
@@ -39,7 +37,7 @@ public class ImageWorker implements Runnable
 		{
 		try
 			{
-			this.webcam = CustomWebcam.createWebcam();
+			this.webcam = CustomWebcam.getInstance();
 			}
 		catch (WebcamLockException e)
 			{
@@ -52,52 +50,55 @@ public class ImageWorker implements Runnable
 				// la première image sera forcement nouvelle
 				if (webcam.isImageNew())
 					{
-					image = webcam.getImage();
-					// Affichage de l'image sur le panel local, accès par Singleton
-					JPanelChat.getInstance().setImageLocal(image);
-
-					// Envoi de l'image par le réseau
-					imageSerializable = new ImageSerializable(image);
-					try
-						{
-						if (Application.getInstance().getRemote() != null)
-							{
-							Application.getInstance().getRemote().setImage(imageSerializable);
-							}
-						}
-					catch (RemoteException e1)
-						{
-						System.out.println("Erreur remote");
-						e1.printStackTrace();
-						}
-					//			Thread sendImage = new Thread(new Runnable()
-					//				{
-					//
-					//				@Override
-					//				public void run()
-					//					{
-					//					if (Application.getInstance().isConnected())
-					//						{
-					//						ImageSerializable serialImg = new ImageSerializable(image);
-					//						try
-					//							{
-					//							if (Application.getInstance().getRemote() != null)
-					//								{
-					//								Application.getInstance().getRemote().setImage(serialImg);
-					//								}
-					//
-					//							}
-					//						catch (RemoteException e1)
-					//							{
-					//							e1.printStackTrace();
-					//							JPanelChat.getInstance().traiterErreurReseau();
-					//							}
-					//						}
-					//					}
-					//				});
-					//
-					//			sendImage.start();
+					JPanelChat.getInstance().getPanelWebcam().repaint();
 					}
+				//{
+				//					image = webcam.getImage();
+				//					// Affichage de l'image sur le panel local, accès par Singleton
+				//					JPanelChat.getInstance().setImageLocal(image);
+				//
+				//					// Envoi de l'image par le réseau
+				//					imageSerializable = new ImageSerializable(image);
+				//					try
+				//						{
+				//						if (Application.getInstance().getRemote() != null)
+				//							{
+				//							Application.getInstance().getRemote().setImage(imageSerializable);
+				//							}
+				//						}
+				//					catch (RemoteException e1)
+				//						{
+				//						System.out.println("Erreur remote");
+				//						e1.printStackTrace();
+				//						}
+				//			Thread sendImage = new Thread(new Runnable()
+				//				{
+				//
+				//				@Override
+				//				public void run()
+				//					{
+				//					if (Application.getInstance().isConnected())
+				//						{
+				//						ImageSerializable serialImg = new ImageSerializable(image);
+				//						try
+				//							{
+				//							if (Application.getInstance().getRemote() != null)
+				//								{
+				//								Application.getInstance().getRemote().setImage(serialImg);
+				//								}
+				//
+				//							}
+				//						catch (RemoteException e1)
+				//							{
+				//							e1.printStackTrace();
+				//							JPanelChat.getInstance().traiterErreurReseau();
+				//							}
+				//						}
+				//					}
+				//				});
+				//
+				//			sendImage.start();
+				//}
 				}
 			else
 				{

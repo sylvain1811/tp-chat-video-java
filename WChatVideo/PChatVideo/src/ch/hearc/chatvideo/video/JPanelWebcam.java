@@ -6,8 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.rmi.RemoteException;
 
 import javax.swing.JPanel;
+
+import ch.hearc.chatvideo.reseau.Application;
 
 public class JPanelWebcam extends JPanel
 	{
@@ -18,7 +21,7 @@ public class JPanelWebcam extends JPanel
 
 	public JPanelWebcam()
 		{
-		isGrey = true;
+		isGrey = false;
 		isCamDisplayed = false;
 		isFpsDiplayed = false;
 		}
@@ -36,14 +39,7 @@ public class JPanelWebcam extends JPanel
 			//if image is different from displayed image
 			if (lastImg != image)
 				{
-				if (isGrey == true)
-					{
-					image = reversedGreyLevel(lastImg);
-					}
-				else
-					{
-					image = reverseImg(lastImg);
-					}
+
 				this.repaint();
 				}
 			}
@@ -120,13 +116,34 @@ public class JPanelWebcam extends JPanel
 		return reversedImage;
 		}
 
-	private void drawImage(Graphics2D g2d)
+	protected void drawImage(Graphics2D g2d)
 		{
+		image = CustomWebcam.getInstance().getImage();
 		if (image != null)
 			{
+			//			if (isGrey == true)
+			//				{
+			//				image = reversedGreyLevel(image);
+			//				}
+			//			else
+			//				{
+			//				image = reverseImg(image);
+			//				}
 			// TODO Scale image en fonction de la taille de la fenetre (remplacer 600, 350)
 			// Idée : écouter les redimensionnement des panels, et adapter
 			g2d.drawImage(this.image, 0, 0, 600, 350, null);
+			}
+		try
+			{
+			if (Application.getInstance().getRemote() != null)
+				{
+				Application.getInstance().getRemote().setImage(new ImageSerializable(image));
+				}
+			}
+		catch (RemoteException e)
+			{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			}
 		}
 
@@ -135,8 +152,8 @@ public class JPanelWebcam extends JPanel
 	\*------------------------------------------------------------------*/
 
 	// Tools
-	private BufferedImage image;
-	private boolean isCamDisplayed;
-	private boolean isGrey;
-	private boolean isFpsDiplayed;
+	protected BufferedImage image;
+	protected boolean isCamDisplayed;
+	protected boolean isGrey;
+	protected boolean isFpsDiplayed;
 	}

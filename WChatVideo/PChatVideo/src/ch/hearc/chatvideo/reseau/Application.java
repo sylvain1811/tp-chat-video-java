@@ -251,6 +251,6 @@ public class Application implements Application_I ,Runnable
 	\*------------------------------*/
 
 	private static Application INSTANCE = null;
-	private Application_I remote;
+	private Application_I remote = null;
 	private static String serverName = null;
 	}
