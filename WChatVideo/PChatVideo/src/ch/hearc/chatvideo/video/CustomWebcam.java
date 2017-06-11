@@ -15,7 +15,7 @@ public class CustomWebcam
 
 	private static Webcam INSTANCE = null;
 
-	public static Webcam getInstance()
+	public static synchronized Webcam getInstance()
 		{
 		if (INSTANCE == null)
 			{
