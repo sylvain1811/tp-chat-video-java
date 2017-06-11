@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.rmi.RemoteException;
 
 import javax.swing.JPanel;
 
@@ -132,19 +131,15 @@ public class JPanelWebcam extends JPanel
 			// TODO Scale image en fonction de la taille de la fenetre (remplacer 600, 350)
 			// Idée : écouter les redimensionnement des panels, et adapter
 			g2d.drawImage(this.image, 0, 0, 600, 350, null);
-			}
-		try
-			{
+
 			if (Application.getInstance().getRemote() != null)
 				{
-				Application.getInstance().getRemote().setImage(new ImageSerializable(image));
+				new ImageSender(image).start();
+				//Application.getInstance().getRemote().setImage(new ImageSerializable(image));
 				}
+
 			}
-		catch (RemoteException e)
-			{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
+
 		}
 
 	/*------------------------------------------------------------------*\
@@ -152,6 +147,7 @@ public class JPanelWebcam extends JPanel
 	\*------------------------------------------------------------------*/
 
 	// Tools
+	private Thread sendImage;
 	protected BufferedImage image;
 	protected boolean isCamDisplayed;
 	protected boolean isGrey;
