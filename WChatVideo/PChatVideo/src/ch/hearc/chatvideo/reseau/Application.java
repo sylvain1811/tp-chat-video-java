@@ -124,16 +124,7 @@ public class Application implements Application_I ,Runnable
 					List<InetAddress> adresses = NetworkTools.localhost("");
 					System.out.println(adresses);
 					System.out.println(adresses.get(0));
-					String id = "";
-					if (JPanelChat.pseudo.contains("syl"))
-						{
-						id = SettingsRMI.APPLICATION_ID + 1;
-						}
-					else
-						{
-						id = SettingsRMI.APPLICATION_ID + 2;
-						}
-					RmiURL rmiURL = new RmiURL(id, adresses.get(0), SettingsRMI.APPLICATION_PORT);
+					RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, adresses.get(0), SettingsRMI.APPLICATION_PORT);
 					RmiTools.shareObject(Application.this, rmiURL);
 
 					}
@@ -185,17 +176,7 @@ public class Application implements Application_I ,Runnable
 
 			// On récupère l'adresse depuis le nom entré par le user
 			System.out.println("Try connect");
-			String id = "";
-			// Inversion de la condition
-			if (!JPanelChat.pseudo.contains("syl"))
-				{
-				id = SettingsRMI.APPLICATION_ID + 1;
-				}
-			else
-				{
-				id = SettingsRMI.APPLICATION_ID + 1;
-				}
-			RmiURL rmiURL = new RmiURL(id, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
+			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
 			isConnected = true;
 			return applicationRemote;
