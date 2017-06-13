@@ -9,8 +9,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import ch.hearc.chatvideo.reseau.Application;
-
 public class JPanelWebcamLocal extends JPanel
 	{
 
@@ -38,7 +36,7 @@ public class JPanelWebcamLocal extends JPanel
 			//if image is different from displayed image
 			if (lastImg != image)
 				{
-
+				this.image = lastImg;
 				this.repaint();
 				}
 			}
@@ -117,7 +115,7 @@ public class JPanelWebcamLocal extends JPanel
 
 	protected void drawImage(Graphics2D g2d)
 		{
-		image = CustomWebcam.getInstance().getImage();
+		//image = CustomWebcam.getInstance().getImage();
 		if (image != null)
 			{
 			//			if (isGrey == true)
@@ -131,13 +129,6 @@ public class JPanelWebcamLocal extends JPanel
 			// TODO Scale image en fonction de la taille de la fenetre (remplacer 600, 350)
 			// Idée : écouter les redimensionnement des panels, et adapter
 			g2d.drawImage(this.image, 0, 0, 600, 350, null);
-
-			// Envoi de l'image par un thread
-			if (Application.getInstance().getRemote() != null)
-				{
-				new ImageSender(image).start();
-				}
-
 			}
 
 		}

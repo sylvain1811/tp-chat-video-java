@@ -155,7 +155,6 @@ public class Application implements Application_I ,Runnable
 				}
 			});
 		serverSide.start();
-
 		}
 
 	/*------------------------------*\

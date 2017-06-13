@@ -48,23 +48,17 @@ public class JPanelChat extends JPanel
 
 	public synchronized void setText(String message)
 		{
-		// TODO Afficher un nouveau message (envoyé ou reçu)
-		// System.out.println("setText called : " + chatHistory.getText() + message);
 		chatHistory.setText(chatHistory.getText() + message);
 		}
 
 	public synchronized void setImage(BufferedImage bufferedImage)
 		{
-		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
 		this.jPanelWebcamDist.setImage(bufferedImage);
 		}
 
 	public synchronized void setImageLocal(BufferedImage bufferedImage)
 		{
-		// TODO Afficher l'image dans le panel, celui pour la webcam local
 		this.jPanelWebcamLocal.setImage(bufferedImage);
-		jPanelWebcamLocal.repaint();
-		jPanelWebcamLocal.revalidate();
 		}
 
 	public synchronized void traiterErreurReseau()
@@ -82,11 +76,6 @@ public class JPanelChat extends JPanel
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
-
-	public JPanelWebcamLocal getPanelWebcam()
-		{
-		return this.jPanelWebcamLocal;
-		}
 
 	/*------------------------------*\
 	|*			  Static			*|
