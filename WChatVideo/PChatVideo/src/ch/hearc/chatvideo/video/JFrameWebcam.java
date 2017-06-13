@@ -38,7 +38,7 @@ public class JFrameWebcam extends JFrame
 	private void geometry()
 		{
 		// JComponent : Instanciation
-		JPanelWebcam webCamPanel = CustomWebcam.createWebcamPanel();
+		JPanelWebcamLocal webCamPanel = CustomWebcam.createWebcamPanel();
 		//Application application = Application.getInstance();
 		ImageWorker worker = new ImageWorker();
 		Thread t = new Thread(worker);

@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 
 import ch.hearc.chatvideo.reseau.Application;
 
-public class JPanelWebcam extends JPanel
+public class JPanelWebcamLocal extends JPanel
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JPanelWebcam()
+	public JPanelWebcamLocal()
 		{
 		isGrey = false;
 		isCamDisplayed = false;
@@ -132,10 +132,10 @@ public class JPanelWebcam extends JPanel
 			// Idée : écouter les redimensionnement des panels, et adapter
 			g2d.drawImage(this.image, 0, 0, 600, 350, null);
 
+			// Envoi de l'image par un thread
 			if (Application.getInstance().getRemote() != null)
 				{
 				new ImageSender(image).start();
-				//Application.getInstance().getRemote().setImage(new ImageSerializable(image));
 				}
 
 			}
@@ -147,7 +147,6 @@ public class JPanelWebcam extends JPanel
 	\*------------------------------------------------------------------*/
 
 	// Tools
-	private Thread sendImage;
 	protected BufferedImage image;
 	protected boolean isCamDisplayed;
 	protected boolean isGrey;

@@ -194,7 +194,7 @@ public class Application implements Application_I ,Runnable
 				}
 			else
 				{
-				id = SettingsRMI.APPLICATION_ID + 2;
+				id = SettingsRMI.APPLICATION_ID + 1;
 				}
 			RmiURL rmiURL = new RmiURL(id, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);

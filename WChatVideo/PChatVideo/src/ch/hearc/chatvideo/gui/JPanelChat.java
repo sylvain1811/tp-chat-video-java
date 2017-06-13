@@ -21,8 +21,8 @@ import org.junit.Assert;
 import ch.hearc.chatvideo.reseau.Application;
 import ch.hearc.chatvideo.tools.StringCrypter;
 import ch.hearc.chatvideo.video.CustomWebcam;
-import ch.hearc.chatvideo.video.JPanelWebcam;
 import ch.hearc.chatvideo.video.JPanelWebcamDist;
+import ch.hearc.chatvideo.video.JPanelWebcamLocal;
 
 /*---------------------------------------------------------------*\
 |*							SINGLETON							 *|
@@ -57,8 +57,6 @@ public class JPanelChat extends JPanel
 		{
 		// TODO Afficher l'image dans le panel, celui pour la vidéo du user distant.
 		this.jPanelWebcamDist.setImage(bufferedImage);
-		jPanelWebcamDist.repaint();
-		jPanelWebcamDist.revalidate();
 		}
 
 	public synchronized void setImageLocal(BufferedImage bufferedImage)
@@ -85,7 +83,7 @@ public class JPanelChat extends JPanel
 	|*				Get				*|
 	\*------------------------------*/
 
-	public JPanelWebcam getPanelWebcam()
+	public JPanelWebcamLocal getPanelWebcam()
 		{
 		return this.jPanelWebcamLocal;
 		}
@@ -229,8 +227,8 @@ public class JPanelChat extends JPanel
 	// Tools
 	private static JPanelChat INSTANCE = null;
 	private JPanel jPanelVideos;
-	private JPanelWebcam jPanelWebcamLocal;
-	private JPanelWebcam jPanelWebcamDist;
+	private JPanelWebcamLocal jPanelWebcamLocal;
+	private JPanelWebcamDist jPanelWebcamDist;
 	private JPanel jPanelSaisie;
 	private JPanel jPanelHistorique;
 	private JTextArea chatHistory;

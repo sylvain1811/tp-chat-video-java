@@ -35,9 +35,9 @@ public class CustomWebcam
 		return webcam;
 		}
 
-	public static JPanelWebcam createWebcamPanel()
+	public static JPanelWebcamLocal createWebcamPanel()
 		{
-		JPanelWebcam webcamPanel = new JPanelWebcam();
+		JPanelWebcamLocal webcamPanel = new JPanelWebcamLocal();
 		return webcamPanel;
 		}
 
