@@ -1,6 +1,7 @@
 
 package ch.hearc.chatvideo.gui;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,7 +55,7 @@ public class JPanelConfig extends JPanel
 	\*------------------------------------------------------------------*/
 
 	/**
-	 * Charge les properties
+	 * Charge les properties. Accès au disque dans thread séparé pour une UI chargée plus vite.
 	 */
 	private void loadProperties()
 		{
@@ -77,7 +78,7 @@ public class JPanelConfig extends JPanel
 					{
 					// TODO File not found
 					System.out.println("Pas de fichiers de config trouvé");
-					//e.printStackTrace();
+					JPanelConfig.this.pseudoProperty = System.getProperty("user.name");
 					}
 				catch (IOException e)
 					{
@@ -110,7 +111,8 @@ public class JPanelConfig extends JPanel
 		}
 
 	/**
-	 * Store les inputs pour la prochaine utilisation
+	 * Store les inputs pour la prochaine utilisation.
+	 * Non bloquant car thread séparé.
 	 */
 	private void storeProperties()
 		{
@@ -164,9 +166,15 @@ public class JPanelConfig extends JPanel
 		{
 		// JComponent : Instanciation
 
+		// JPanels
+		JPanel panelInput = new JPanel();
+		GridLayout gridInput = new GridLayout(0, 2);
+		gridInput.setHgap(20);
+		panelInput.setLayout(gridInput);
+
 		//Labels
 		labelIpAdressDist = new JLabel("Adresse IP distante");
-		labelIpAdressLocal = new JLabel("Votre adresse IP : ");
+		labelIpAdressLocal = new JLabel("Votre adresse IP : " + Application.getIp().substring(1));
 		labelPseudo = new JLabel("Votre pseudo");
 
 		//TextField
@@ -178,18 +186,20 @@ public class JPanelConfig extends JPanel
 
 		// Layout : Specification
 			{
-			GridLayout gridlayout = new GridLayout(0, 2);
+			GridLayout gridlayout = new GridLayout(0, 1);
 			setLayout(gridlayout);
 
 			// flowlayout.setHgap(20);
 			// flowlayout.setVgap(20);
+			gridlayout.setHgap(20);
 			}
 
 		// JComponent : add
-		add(labelIpAdressDist);
-		add(textInputIpAdressDist);
-		add(labelPseudo);
-		add(textInputPseudo);
+		panelInput.add(labelIpAdressDist);
+		panelInput.add(textInputIpAdressDist);
+		panelInput.add(labelPseudo);
+		panelInput.add(textInputPseudo);
+		add(panelInput);
 		add(labelIpAdressLocal);
 		add(buttonConnexion);
 		}
@@ -229,7 +239,8 @@ public class JPanelConfig extends JPanel
 
 	private void appearance()
 		{
-		setSize(350, 150);
+		setSize(350, 180);
+		setMinimumSize(new Dimension(350, 180));
 		}
 
 	/*------------------------------------------------------------------*\

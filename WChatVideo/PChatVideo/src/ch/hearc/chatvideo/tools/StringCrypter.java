@@ -20,71 +20,67 @@ public class StringCrypter implements Serializable
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
+	/**
+	 * Construis un objet avec un message
+	 * @param message
+	 */
 	public StringCrypter(String message)
 		{
-		this.message = message;
-		crypter();
+		crypter(message);
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
+	/**
+	 * Décrypte le message contenu en attibut (byte[]) et le retourne en String.
+	 * Demande une clé privé de en paramètres, on la trouve dans Application.
+	 */
 	public String decrypter(PrivateKey privateKey)
 		{
-		// TODO : Decrypter message
 		Cipher cipher;
 		try
 			{
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			byte[] decryptedMessage = cipher.doFinal(encryptedMessage);
-			this.message = new String(decryptedMessage, Charset.forName("UTF-8"));
-			return this.message;
+			return new String(decryptedMessage, Charset.forName("UTF-8"));
 			}
 		catch (NoSuchAlgorithmException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (NoSuchPaddingException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (InvalidKeyException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (IllegalBlockSizeException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (BadPaddingException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		return null;
 		}
 
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
-	private void crypter()
+	/**
+	 * Crypte le message reçu en paramètres et l'enregistre en attribut.
+	 * Ce sera les seules données sérialisées.
+	 * Le message sera un tableau de byte.
+	 */
+	private void crypter(String message)
 		{
-		// TODO : Crypter message
 		Cipher cipher;
 		try
 			{
@@ -95,27 +91,22 @@ public class StringCrypter implements Serializable
 			}
 		catch (NoSuchAlgorithmException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (NoSuchPaddingException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (InvalidKeyException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (IllegalBlockSizeException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		catch (BadPaddingException e)
 			{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
 		}
@@ -124,6 +115,5 @@ public class StringCrypter implements Serializable
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	private String message;
 	private byte[] encryptedMessage;
 	}

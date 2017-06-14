@@ -6,14 +6,16 @@ import java.awt.Dimension;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
 
+/*---------------------------------------------------------------*\
+|*							SINGLETON							 *|
+\*---------------------------------------------------------------*/
+
 public class CustomWebcam
 	{
 
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
-
-	private static Webcam INSTANCE = null;
 
 	public static synchronized Webcam getInstance()
 		{
@@ -40,5 +42,15 @@ public class CustomWebcam
 		JPanelWebcamLocal webcamPanel = new JPanelWebcamLocal();
 		return webcamPanel;
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Attributs Private						*|
+	\*------------------------------------------------------------------*/
+
+	/*------------------------------*\
+	|*			  Static			*|
+	\*------------------------------*/
+
+	private static Webcam INSTANCE = null;
 
 	}

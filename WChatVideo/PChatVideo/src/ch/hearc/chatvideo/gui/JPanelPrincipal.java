@@ -1,3 +1,4 @@
+
 package ch.hearc.chatvideo.gui;
 
 import java.awt.Dimension;
@@ -14,7 +15,7 @@ public class JPanelPrincipal extends JPanel
 
 	public JPanelPrincipal(JFramePrincipale jFramePrincipale)
 		{
-		this.jFramePrincipale= jFramePrincipale;
+		this.jFramePrincipale = jFramePrincipale;
 		geometry();
 		control();
 		appearance();
@@ -24,17 +25,22 @@ public class JPanelPrincipal extends JPanel
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	public void repaintJFramePrincipale(){
+	public void repaintJFramePrincipale()
+		{
 		jFramePrincipale.repaint();
-	}
+		}
 
 	/*------------------------------*\
 	|*				Set				*|
 	\*------------------------------*/
 
-	public void setJFramePrincipaleSize(Dimension dimension){
+	public void setJFramePrincipaleSize(Dimension dimension)
+		{
 		jFramePrincipale.setSize(dimension);
-	}
+
+		// On profite de recentrer la Frame
+		jFramePrincipale.setLocationRelativeTo(null);
+		}
 
 	/*------------------------------*\
 	|*				Get				*|

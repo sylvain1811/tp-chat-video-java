@@ -36,6 +36,7 @@ public class ImageWorker implements Runnable
 		catch (WebcamLockException e)
 			{
 			// TODO Afficher un message car la caméra est déjà utilisée
+			System.err.println("Webcame déjà ouverte");
 			}
 
 		// 60 fois par secondes, on set l'image sur le panel local et sur le panel distant de l'autre avec RMI

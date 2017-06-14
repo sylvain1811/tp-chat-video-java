@@ -36,6 +36,7 @@ public class Application implements Application_I ,Runnable
 
 	private Application()
 		{
+		// Générations de clés privée et publique
 		KeyPairGenerator keyGen;
 		try
 			{
@@ -60,7 +61,11 @@ public class Application implements Application_I ,Runnable
 	public void run()
 		{
 		System.out.println("[Application]:run");
+
+		// Démarre le serveur RMI
 		serverSide();
+
+		// Se connecte au serveur RMI du correspondant
 		clientSide();
 		}
 
@@ -68,28 +73,34 @@ public class Application implements Application_I ,Runnable
 	|*				Set				*|
 	\*------------------------------*/
 
+	public synchronized void setConnected(boolean connected)
+		{
+		this.isConnected = connected;
+		}
+
+	/*------------------------------*\
+	|*				RMI				*|
+	\*------------------------------*/
+
 	@Override
 	public void setText(StringCrypter message)
 		{
+		// Appelée à distance. Il faut décrypter le message avec la clé privée.
 		JPanelChat.getInstance().setText(message.decrypter(this.privateKey));
 		}
 
 	@Override
 	public void setImage(ImageSerializable imageSerialisee)
 		{
+		// Appelée à distance. On va mettre à jour le panel de la webcam distante avec l'image reçue en paramètres.
 		JPanelChat.getInstance().setImage(imageSerialisee.getImage());
 		}
 
 	@Override
 	public void setKey(PublicKey key) throws RemoteException
 		{
+		// Appelée à distance. On utilisera cette clé pour crypter les messages à envoyer au correspondant.
 		this.publicKeyDist = key;
-
-		}
-
-	public synchronized void setConnected(boolean connected)
-		{
-		this.isConnected = connected;
 		}
 
 	/*------------------------------*\
@@ -114,6 +125,10 @@ public class Application implements Application_I ,Runnable
 	|*			  Static			*|
 	\*------------------------------*/
 
+	/**
+	 * Retourne l'instance unique de la classe. Si elle n'est pas créée, appel le contructeur.
+	 * Il est nécessaire d'appeler une fois init() avant cette méthode.
+	 */
 	public static synchronized Application getInstance()
 		{
 		Assert.assertTrue(serverName != null);
@@ -124,9 +139,25 @@ public class Application implements Application_I ,Runnable
 		return INSTANCE;
 		}
 
+	/**
+	 * Initialise l'Application avec le serverName sur lequel on veut se connecter.
+	 */
 	public static synchronized void init(String serverName)
 		{
 		Application.serverName = serverName;
+		}
+
+	public static String getIp()
+		{
+		try
+			{
+			return NetworkTools.localhost("").get(0).toString();
+			}
+		catch (SocketException e)
+			{
+			e.printStackTrace();
+			}
+		return null;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -137,6 +168,10 @@ public class Application implements Application_I ,Runnable
 	|*			  Server			*|
 	\*------------------------------*/
 
+	/**
+	 * Crée et démarre un thread qui va partager l'Application avec RMI
+	 * Pourquoi un thread ? Pour ne pas avoir une méthode bloquante, les actions réseau prennent parfois du temps.
+	 */
 	private void serverSide()
 		{
 		Thread serverSide = new Thread(new Runnable()
@@ -181,6 +216,10 @@ public class Application implements Application_I ,Runnable
 	|*			  Client			*|
 	\*------------------------------*/
 
+	/**
+	 * Crée et démarre un thread qui va se connecter à une Application distante avec RMI.
+	 * Pourquoi un thread ? Pour ne pas avoir une méthode bloquante, les actions réseau prennent parfois du temps.
+	 */
 	private void clientSide()
 		{
 		Thread clientSide = new Thread(new Runnable()
@@ -193,9 +232,12 @@ public class Application implements Application_I ,Runnable
 				}
 			});
 		clientSide.start();
-		// work();
 		}
 
+	/**
+	 * Tente de se connecter à une Application distante avec RMI
+	 * @return
+	 */
 	private Application_I connect()
 		{
 		try
@@ -230,42 +272,26 @@ public class Application implements Application_I ,Runnable
 
 		catch (MalformedURLException e)
 			{
-			System.err.println("[Application]:fail connection remote object");
+			System.err.println("[Application]: fail connection remote object");
 			e.printStackTrace();
 			return null;
 			}
 		}
-
-	// Pas utile, pour tests seulement
-	//	private void work()
-	//		{
-	//		try
-	//			{
-	//			// TODO envoyer les messages
-	//			this.remote.setText(new StringCrypter("Init"));
-	//
-	//			}
-	//		catch (RemoteException e)
-	//			{
-	//			System.err.println("[Application]: setText() error in work method");
-	//			e.printStackTrace();
-	//			}
-	//		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
 	private boolean isConnected = false;
+	private PrivateKey privateKey;
+	private PublicKey publicKeyLocal;
+	private PublicKey publicKeyDist;
+	private Application_I remote = null;
 
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
 
 	private static Application INSTANCE = null;
-	private Application_I remote = null;
 	private static String serverName = null;
-	private PrivateKey privateKey;
-	private PublicKey publicKeyLocal;
-	private PublicKey publicKeyDist;
 	}

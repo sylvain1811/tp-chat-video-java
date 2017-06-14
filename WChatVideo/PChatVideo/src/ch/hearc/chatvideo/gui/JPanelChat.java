@@ -5,12 +5,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -104,59 +108,69 @@ public class JPanelChat extends JPanel
 		{
 		// JComponent : Instanciation
 
-		jPanelVideos = new JPanel();
-		jPanelVideos.setPreferredSize(new Dimension(1200, 700));
+		jPanelWebcams = new JPanel();
+		jPanelWebcams.setPreferredSize(new Dimension(600, 700));
 
-		jPanelWebcamLocal = CustomWebcam.createWebcamPanel();
-		jPanelWebcamLocal.setPreferredSize(new Dimension(600, 300));
-		//jPanelWebcamLocal.setBackground(Color.RED);
+		JPanel jPanelVideoChat = new JPanel();
+		jPanelVideoChat.setLayout(new BorderLayout());
 
 		jPanelWebcamDist = new JPanelWebcamDist();
-		jPanelWebcamDist.setPreferredSize(new Dimension(600, 300));
-		jPanelWebcamDist.setBackground(Color.BLUE);
-		//jPanelWebcamDist.setBackground(Color.BLACK);
+		//jPanelWebcamDist.setPreferredSize(new Dimension(500, 300));
+		jPanelWebcamDist.add(new JLabel("Webcam correspondant"));
+		jPanelWebcamDist.setBackground(Color.BLACK);
 
+		jPanelWebcamLocal = CustomWebcam.createWebcamPanel();
+		//jPanelWebcamLocal.setPreferredSize(new Dimension(500, 300));
+		jPanelWebcamLocal.add(new JLabel("Ma webcam"));
+		jPanelWebcamLocal.setBackground(Color.RED);
+
+		JPanel jPanelTextChat = new JPanel();
 		jPanelSaisie = new JPanel();
+		BorderLayout borderLayout = new BorderLayout();
+		borderLayout.setVgap(20);
+		jPanelTextChat.setLayout(borderLayout);
 
-		jPanelHistorique = new JPanel();
-		jPanelHistorique.setPreferredSize(new Dimension(900, 150));
-
-		chatHistory = new JTextArea();
-		chatHistory.setPreferredSize(jPanelHistorique.getPreferredSize());
-
-		messageInput = new JTextField();
-		messageInput.setPreferredSize(new Dimension(150, 25));
 		sendButton = new JButton("Envoyer");
 
-		FlowLayout flowLayout1 = new FlowLayout();
+		chatHistory = new JTextArea();
+		messageInput = new JTextField();
+		messageInput.setPreferredSize(new Dimension(200, 25));
 
-		jPanelVideos.setLayout(flowLayout1);
-		jPanelVideos.add(jPanelWebcamLocal);
-		jPanelVideos.add(jPanelWebcamDist);
+		GridLayout gridLayout = new GridLayout(0, 1);
 
-		FlowLayout flowLayout2 = new FlowLayout();
+		jPanelWebcams.setLayout(gridLayout);
+		jPanelWebcams.add(jPanelWebcamLocal);
+		jPanelWebcams.add(jPanelWebcamDist);
 
-		jPanelSaisie.setLayout(flowLayout2);
-		jPanelSaisie.add(messageInput);
-		jPanelSaisie.add(sendButton);
+		JPanel jPanelControleWebcam = new JPanel();
+		jPanelControleWebcam.setLayout(new FlowLayout());
 
-		FlowLayout flowLayout3 = new FlowLayout();
-		jPanelHistorique.setLayout(flowLayout3);
-		jPanelHistorique.add(chatHistory);
+		this.buttonGriser = new JButton("Griser");
+		this.buttonMirroir = new JButton("Effet mirroir");
+
+		jPanelControleWebcam.add(buttonGriser);
+		jPanelControleWebcam.add(buttonMirroir);
+
+		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
+		jPanelVideoChat.add(jPanelControleWebcam, BorderLayout.SOUTH);
+
+		jPanelSaisie.setLayout(new BorderLayout());
+		jPanelSaisie.add(messageInput, BorderLayout.CENTER);
+		jPanelSaisie.add(sendButton, BorderLayout.EAST);
+
+		jPanelTextChat.add(chatHistory, BorderLayout.CENTER);
+		jPanelTextChat.add(jPanelSaisie, BorderLayout.SOUTH);
 
 		// Layout : Specification
 			{
 			BorderLayout layout = new BorderLayout();
+			layout.setHgap(50);
 			setLayout(layout);
-
-			// flowlayout.setHgap(20);
-			// flowlayout.setVgap(20);
 			}
 
 		// JComponent : add
-		add(jPanelVideos, BorderLayout.NORTH);
-		add(jPanelHistorique, BorderLayout.CENTER);
-		add(jPanelSaisie, BorderLayout.SOUTH);
+		add(jPanelVideoChat, BorderLayout.CENTER);
+		add(jPanelTextChat, BorderLayout.EAST);
 
 		}
 
@@ -198,11 +212,24 @@ public class JPanelChat extends JPanel
 				messageInput.setText("");
 				}
 			});
+
+		messageInput.addKeyListener(new KeyAdapter()
+			{
+
+			@Override
+			public void keyReleased(KeyEvent e)
+				{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					{
+					sendButton.doClick();
+					}
+				}
+			});
 		}
 
 	private void appearance()
 		{
-		setSize(1300, 1000);
+		setSize(1000, 800);
 		}
 
 	/*------------------------------------------------------------------*\
@@ -215,13 +242,14 @@ public class JPanelChat extends JPanel
 
 	// Tools
 	private static JPanelChat INSTANCE = null;
-	private JPanel jPanelVideos;
+	private JPanel jPanelWebcams;
 	private JPanelWebcamLocal jPanelWebcamLocal;
 	private JPanelWebcamDist jPanelWebcamDist;
 	private JPanel jPanelSaisie;
-	private JPanel jPanelHistorique;
 	private JTextArea chatHistory;
 	private JTextField messageInput;
 	private JButton sendButton;
+	private JButton buttonMirroir;
+	private JButton buttonGriser;
 
 	}
