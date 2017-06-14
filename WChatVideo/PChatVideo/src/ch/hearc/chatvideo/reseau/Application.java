@@ -6,6 +6,11 @@ import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.List;
 
 import org.junit.Assert;
@@ -31,7 +36,20 @@ public class Application implements Application_I ,Runnable
 
 	private Application()
 		{
-		// Vide
+		KeyPairGenerator keyGen;
+		try
+			{
+			keyGen = KeyPairGenerator.getInstance("RSA");
+			keyGen.initialize(1024);
+			KeyPair pair = keyGen.generateKeyPair();
+			this.privateKey = pair.getPrivate();
+			this.publicKeyLocal = pair.getPublic();
+			}
+		catch (NoSuchAlgorithmException e)
+			{
+			e.printStackTrace();
+			}
+
 		}
 
 	/*------------------------------------------------------------------*\
@@ -53,13 +71,20 @@ public class Application implements Application_I ,Runnable
 	@Override
 	public void setText(StringCrypter message)
 		{
-		JPanelChat.getInstance().setText(message.decrypter());
+		JPanelChat.getInstance().setText(message.decrypter(this.privateKey));
 		}
 
 	@Override
 	public void setImage(ImageSerializable imageSerialisee)
 		{
 		JPanelChat.getInstance().setImage(imageSerialisee.getImage());
+		}
+
+	@Override
+	public void setKey(PublicKey key) throws RemoteException
+		{
+		this.publicKeyDist = key;
+
 		}
 
 	public synchronized void setConnected(boolean connected)
@@ -81,6 +106,10 @@ public class Application implements Application_I ,Runnable
 		return this.isConnected;
 		}
 
+	public PublicKey getPublicKey()
+		{
+		return this.publicKeyDist;
+		}
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
@@ -179,6 +208,9 @@ public class Application implements Application_I ,Runnable
 			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
 			isConnected = true;
+
+			// On envoie direct la clé publique
+			applicationRemote.setKey(this.publicKeyLocal);
 			return applicationRemote;
 			}
 
@@ -233,4 +265,7 @@ public class Application implements Application_I ,Runnable
 	private static Application INSTANCE = null;
 	private Application_I remote = null;
 	private static String serverName = null;
+	private PrivateKey privateKey;
+	private PublicKey publicKeyLocal;
+	private PublicKey publicKeyDist;
 	}
