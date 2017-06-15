@@ -2,10 +2,14 @@
 package ch.hearc.chatvideo.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -174,19 +178,42 @@ public class JPanelConfig extends JPanel
 
 		// JPanels
 		JPanel panelInput = new JPanel();
+		panelInput.setBackground(Color.WHITE);
 		GridLayout gridInput = new GridLayout(0, 2);
-		gridInput.setHgap(20);
+		gridInput.setVgap(20);
 		panelInput.setLayout(gridInput);
+
+		JPanel panelLogo = new JPanel();
+		panelLogo.setBackground(Color.WHITE);
+		FlowLayout flowLayout = new FlowLayout();
+		panelLogo.setLayout(flowLayout);
+
+		JPanel panelBottom = new JPanel();
+		panelBottom.setBackground(Color.WHITE);
+		BorderLayout borderLayout = new BorderLayout();
+		borderLayout.setVgap(20);
+		panelBottom.setLayout(borderLayout);
 
 		//Labels
 		labelIpAdressDist = new JLabel("Adresse IP distante");
 		labelIpAdressLocal = new JLabel("Votre adresse IP : " + Application.getIp());
 		labelPseudo = new JLabel("Votre pseudo");
+		logo = new JLabel();
 
 		//TextField
 		textInputIpAdressDist = new JTextField();
-		textInputIpAdressDist.setMaximumSize(new Dimension(150, 20));
 		textInputPseudo = new JTextField();
+
+		//Image
+		try
+			{
+			BufferedImage img = ImageIO.read(new File("images\\videoIcon.png"));
+			logo.setIcon(new ImageIcon(img));
+			}
+		catch (IOException e)
+			{
+			e.printStackTrace();
+			}
 
 		//Button
 		buttonConnexion = new JButton();
@@ -195,29 +222,35 @@ public class JPanelConfig extends JPanel
 			BufferedImage img = ImageIO.read(new File("images\\boutonConnexion.png"));
 			buttonConnexion.setIcon(new ImageIcon(img));
 			}
-		catch (Exception ex)
+		catch (Exception e)
 			{
-			System.out.println(ex);
+			e.printStackTrace();
 			}
 		buttonConnexion.setBorder(BorderFactory.createEmptyBorder());
 		buttonConnexion.setContentAreaFilled(false);
 
 		// Layout : Specification
 			{
-			GridLayout gridlayout = new GridLayout(0, 1);
-			setLayout(gridlayout);
+			BorderLayout borderlayout = new BorderLayout(0, 1);
+			setLayout(borderlayout);
 
-			gridlayout.setHgap(20);
+			borderlayout.setVgap(20);
 			}
 
-		// JComponent : add
+		panelLogo.add(logo);
+
+		panelBottom.add(labelIpAdressLocal, BorderLayout.NORTH);
+		panelBottom.add(buttonConnexion, BorderLayout.CENTER);
+
 		panelInput.add(labelIpAdressDist);
 		panelInput.add(textInputIpAdressDist);
 		panelInput.add(labelPseudo);
 		panelInput.add(textInputPseudo);
-		add(panelInput);
-		add(labelIpAdressLocal);
-		add(buttonConnexion);
+
+		// JComponent : add
+		add(panelLogo, BorderLayout.NORTH);
+		add(panelInput, BorderLayout.CENTER);
+		add(panelBottom, BorderLayout.SOUTH);
 		}
 
 	private void control()
@@ -253,12 +286,30 @@ public class JPanelConfig extends JPanel
 				webcamThread.start();
 				}
 			});
+
+		KeyAdapter keyAdapter = new KeyAdapter()
+			{
+			@Override
+			public void keyReleased(KeyEvent e)
+				{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					{
+					buttonConnexion.doClick();
+					}
+				}
+
+			};
+
+			textInputIpAdressDist.addKeyListener(keyAdapter);
+			textInputPseudo.addKeyListener(keyAdapter);
+
 		}
 
 	private void appearance()
 		{
-		setSize(400, 350);
-		setMinimumSize(new Dimension(400, 350));
+		setSize(400, 450);
+		setMinimumSize(new Dimension(400, 450));
+		setBackground(Color.WHITE);
 		}
 
 	/*------------------------------------------------------------------*\
@@ -272,6 +323,7 @@ public class JPanelConfig extends JPanel
 	private JLabel labelIpAdressDist;
 	private JLabel labelPseudo;
 	private JLabel labelIpAdressLocal;
+	private JLabel logo;
 	private JTextField textInputIpAdressDist;
 	private JTextField textInputPseudo;
 	private JButton buttonConnexion;
