@@ -157,7 +157,14 @@ public class Application implements Application_I ,Runnable
 		{
 		try
 			{
-			return NetworkTools.localhost("").get(0).toString().substring(1);
+			if (NetworkTools.localhost("").size() > 0)
+				{
+				return NetworkTools.localhost("").get(0).toString().substring(1);
+				}
+			else
+				{
+				return "Pas d'IP";
+				}
 			}
 		catch (SocketException e)
 			{
@@ -206,7 +213,7 @@ public class Application implements Application_I ,Runnable
 					{
 					try
 						{
-						Thread.sleep(3000);
+						Thread.sleep(4000);
 						if (System.currentTimeMillis() - Application.this.lastBeatDist > 5000)
 							{
 							Application.this.setConnected(false);
@@ -368,7 +375,7 @@ public class Application implements Application_I ,Runnable
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	private boolean isConnected = true;
+	private boolean isConnected = false;
 	private PrivateKey privateKey;
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
