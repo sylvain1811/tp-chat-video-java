@@ -116,7 +116,7 @@ public class Application implements Application_I ,Runnable
 
 	public Application_I getRemote()
 		{
-		if (isConnected)
+		if (isConnected || this.lastBeatDist == -1)
 			{
 			return this.remote;
 			}
@@ -340,7 +340,7 @@ public class Application implements Application_I ,Runnable
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
 	private Application_I remote = null;
-	private long lastBeatDist;
+	private long lastBeatDist = -1;
 	private Thread heartbeatChecker;
 
 	/*------------------------------*\
