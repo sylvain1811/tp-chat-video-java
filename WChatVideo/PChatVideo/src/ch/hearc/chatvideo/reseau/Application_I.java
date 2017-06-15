@@ -5,8 +5,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.security.PublicKey;
 
+import ch.hearc.chatvideo.tools.ImageCrypter;
 import ch.hearc.chatvideo.tools.StringCrypter;
-import ch.hearc.chatvideo.video.ImageSerializable;
 
 public interface Application_I extends Remote
 	{
@@ -19,7 +19,7 @@ public interface Application_I extends Remote
 	/**
 	 * Appelée à distance. On reçoit la nouvelle image du correspondant en paramètres.
 	 */
-	public void setImage(ImageSerializable image) throws RemoteException;
+	public void setImage(ImageCrypter image) throws RemoteException;
 
 	/**
 	 * Appelée à distance. On reçoit la clé publique du correspondant en paramètres.
