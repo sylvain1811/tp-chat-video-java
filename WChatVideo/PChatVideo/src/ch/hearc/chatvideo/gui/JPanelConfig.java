@@ -50,18 +50,6 @@ public class JPanelConfig extends JPanel
 		}
 
 	/*------------------------------------------------------------------*\
-	|*							Methodes Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
-	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
@@ -73,7 +61,8 @@ public class JPanelConfig extends JPanel
 		Thread load = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				Properties properties = new Properties();
 				FileInputStream fileInputStream = null;
@@ -129,7 +118,8 @@ public class JPanelConfig extends JPanel
 		Thread store = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				Properties properties = new Properties();
 				FileOutputStream fileOutputStream = null;
@@ -257,7 +247,8 @@ public class JPanelConfig extends JPanel
 		buttonConnexion.addActionListener(new ActionListener()
 			{
 
-			@Override public void actionPerformed(ActionEvent e)
+			@Override
+			public void actionPerformed(ActionEvent e)
 				{
 				// Store les données pour prochain lancement
 				storeProperties();
@@ -290,7 +281,8 @@ public class JPanelConfig extends JPanel
 		KeyAdapter keyAdapter = new KeyAdapter()
 			{
 
-			@Override public void keyReleased(KeyEvent e)
+			@Override
+			public void keyReleased(KeyEvent e)
 				{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					{

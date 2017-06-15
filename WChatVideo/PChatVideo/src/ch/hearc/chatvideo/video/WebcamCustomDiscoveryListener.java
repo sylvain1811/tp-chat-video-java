@@ -9,6 +9,10 @@ import com.github.sarxos.webcam.WebcamDiscoveryListener;
 public class WebcamCustomDiscoveryListener implements WebcamDiscoveryListener
 	{
 
+	/*------------------------------------------------------------------*\
+	|*							Constructeurs							*|
+	\*------------------------------------------------------------------*/
+
 	public WebcamCustomDiscoveryListener(WebcamWorker worker)
 		{
 		this.worker = worker;
@@ -19,17 +23,27 @@ public class WebcamCustomDiscoveryListener implements WebcamDiscoveryListener
 		Webcam.addDiscoveryListener(this);
 		}
 
-	@Override public void webcamFound(WebcamDiscoveryEvent event)
+	/*------------------------------------------------------------------*\
+	|*							Methodes Public							*|
+	\*------------------------------------------------------------------*/
+
+	@Override
+	public void webcamFound(WebcamDiscoveryEvent event)
 		{
 		System.out.format("Webcam connected: %s \n", event.getWebcam().getName());
 		worker.openWebcam();
 		}
 
-	@Override public void webcamGone(WebcamDiscoveryEvent event)
+	@Override
+	public void webcamGone(WebcamDiscoveryEvent event)
 		{
 		worker.closeWebcam();
 		System.out.format("Webcam disconnected: %s \n", event.getWebcam().getName());
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Attributs Private						*|
+	\*------------------------------------------------------------------*/
 
 	private WebcamWorker worker;
 	}

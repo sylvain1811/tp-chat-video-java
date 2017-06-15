@@ -198,9 +198,9 @@ public class Application implements Application_I ,Runnable
 					{
 					try
 						{
-						Thread.sleep(500);
+						Thread.sleep(1000);
 						Application.this.remote.sendHeartbeat();
-						if (System.currentTimeMillis() - Application.this.lastBeatDist > 1000)
+						if (System.currentTimeMillis() - Application.this.lastBeatDist > 1200)
 							{
 							Application.this.setConnected(false);
 							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);

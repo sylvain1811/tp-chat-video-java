@@ -6,6 +6,9 @@ import java.security.PrivateKey;
 
 import ch.hearc.chatvideo.video.ImageSerializable;
 
+/**
+ * Devrait crypter les images mais elles sont trop lourdes. A compléter.
+ */
 public class ImageCrypter implements Serializable
 	{
 	/*------------------------------------------------------------------*\

@@ -6,19 +6,11 @@ import com.bilat.tools.reseau.rmi.RmiTools;
 public class SettingsRMI
 	{
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Public							*|
-	\*------------------------------------------------------------------*/
-
 	/*------------------------------*\
 	|*			  Chat				*|
 	\*------------------------------*/
 
 	public static final String APPLICATION_ID = "ChatVideoTP";
 	public static final int APPLICATION_PORT = RmiTools.PORT_RMI_DEFAUT;
-
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
 
 	}

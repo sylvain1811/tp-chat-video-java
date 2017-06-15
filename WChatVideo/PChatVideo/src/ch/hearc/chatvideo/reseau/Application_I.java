@@ -8,6 +8,9 @@ import java.security.PublicKey;
 import ch.hearc.chatvideo.tools.ImageCrypter;
 import ch.hearc.chatvideo.tools.StringCrypter;
 
+/**
+ * Méthodes appelées par RMI
+ */
 public interface Application_I extends Remote
 	{
 

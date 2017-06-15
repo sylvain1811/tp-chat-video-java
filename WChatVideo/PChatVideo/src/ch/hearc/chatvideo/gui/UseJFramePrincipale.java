@@ -1,8 +1,6 @@
 
 package ch.hearc.chatvideo.gui;
 
-
-
 public class UseJFramePrincipale
 	{
 
@@ -19,10 +17,4 @@ public class UseJFramePrincipale
 		{
 		new JFramePrincipale();
 		}
-
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
-
 	}
-

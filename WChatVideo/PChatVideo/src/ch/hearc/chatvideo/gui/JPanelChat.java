@@ -73,6 +73,7 @@ public class JPanelChat extends JPanel
 		{
 		// Affiche un message et indique que la remote est déconnectée
 		JOptionPane.showMessageDialog(this, "Une déconnexion est apparue.", "Erreur", JOptionPane.ERROR_MESSAGE);
+		System.exit(0); // 0 normal, -1 anormal
 		// TODO Sysexit quand ok appuyé.
 		}
 
@@ -299,7 +300,6 @@ public class JPanelChat extends JPanel
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	// TODO enlever public
 	public static String pseudo = null;
 
 	// Tools
