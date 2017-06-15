@@ -116,7 +116,7 @@ public class Application implements Application_I ,Runnable
 	|*				Get				*|
 	\*------------------------------*/
 
-	public Application_I getRemote()
+	public synchronized Application_I getRemote()
 		{
 		if (isConnected || this.lastBeatDist == -1)
 			{
@@ -361,7 +361,7 @@ public class Application implements Application_I ,Runnable
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	private boolean isConnected = true;
+	private boolean isConnected = false;
 	private PrivateKey privateKey;
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
