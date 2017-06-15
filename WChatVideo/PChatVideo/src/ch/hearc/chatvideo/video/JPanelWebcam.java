@@ -17,9 +17,7 @@ public class JPanelWebcam extends JPanel {
 
 	public JPanelWebcam() {
 		isGrey = false;
-		isCamDisplayed = false;
 		isReversed = false;
-		isFpsDiplayed = false;
 	}
 
 	/*------------------------------------------------------------------*\
@@ -46,16 +44,8 @@ public class JPanelWebcam extends JPanel {
 		isGrey = !isGrey;
 	}
 
-	public void toggleCamDisplayed() {
-		isCamDisplayed = !isCamDisplayed;
-	}
-
 	public void toggleReversed() {
 		isReversed = !isReversed;
-	}
-
-	public void toggleFPSDisplayed() {
-		isFpsDiplayed = !isFpsDiplayed;
 	}
 
 	/*------------------------------*\
@@ -109,8 +99,6 @@ public class JPanelWebcam extends JPanel {
 
 	// Tools
 	protected BufferedImage image;
-	protected boolean isCamDisplayed;
 	protected boolean isReversed;
 	protected boolean isGrey;
-	protected boolean isFpsDiplayed;
 }

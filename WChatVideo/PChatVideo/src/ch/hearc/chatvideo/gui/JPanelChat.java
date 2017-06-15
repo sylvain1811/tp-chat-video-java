@@ -74,8 +74,7 @@ public class JPanelChat extends JPanel
 		{
 		// Affiche un message et indique que la remote est déconnectée
 		JOptionPane.showMessageDialog(this, "Une déconnexion est apparue.", "Erreur", JOptionPane.ERROR_MESSAGE);
-		Application.getInstance().setConnected(false);
-		// TODO Retour au menu de connexion
+		// TODO Sysexit quand ok appuyé.
 		}
 
 	/*------------------------------*\
@@ -185,6 +184,7 @@ public class JPanelChat extends JPanel
 		jPanelSaisie.setLayout(new BorderLayout());
 		jPanelSaisie.add(messageInput, BorderLayout.CENTER);
 		jPanelSaisie.add(sendButton, BorderLayout.EAST);
+		jPanelSaisie.setBackground(Color.WHITE);
 
 		jPanelTextChat.add(chatHistory, BorderLayout.CENTER);
 		jPanelTextChat.add(jPanelSaisie, BorderLayout.SOUTH);

@@ -29,8 +29,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ch.hearc.chatvideo.reseau.Application;
-import ch.hearc.chatvideo.video.ImageWorker;
-import ch.hearc.cours.gui.tools.JPanelDecorator;
+import ch.hearc.chatvideo.tools.JPanelDecorator;
+import ch.hearc.chatvideo.video.WebcamCustomDiscoveryListener;
+import ch.hearc.chatvideo.video.WebcamWorker;
 
 public class JPanelConfig extends JPanel
 	{
@@ -245,7 +246,9 @@ public class JPanelConfig extends JPanel
 		{
 		buttonConnexion.addMouseListener(new MouseAdapter()
 			{
+
 			URL url = null;
+
 			@Override
 			public void mouseEntered(MouseEvent evt)
 				{
@@ -288,8 +291,10 @@ public class JPanelConfig extends JPanel
 				reseauThread.start();
 
 				// Lancement de la partie webcam
-				Thread webcamThread = new Thread(new ImageWorker());
+				WebcamWorker worker = new WebcamWorker();
+				Thread webcamThread = new Thread(worker);
 				webcamThread.start();
+				new WebcamCustomDiscoveryListener(worker);
 				}
 			});
 

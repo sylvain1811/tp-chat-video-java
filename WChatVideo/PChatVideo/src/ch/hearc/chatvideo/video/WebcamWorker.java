@@ -1,26 +1,27 @@
 
 package ch.hearc.chatvideo.video;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.rmi.RemoteException;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamLockException;
+import com.github.sarxos.webcam.WebcamResolution;
 
 import ch.hearc.chatvideo.gui.JPanelChat;
 import ch.hearc.chatvideo.reseau.Application;
 import ch.hearc.chatvideo.tools.ImageCrypter;
 
-public class ImageWorker implements Runnable
+public class WebcamWorker implements Runnable
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public ImageWorker()
+	public WebcamWorker()
 		{
-		// Vide
 		}
 
 	/*------------------------------------------------------------------*\
@@ -31,7 +32,7 @@ public class ImageWorker implements Runnable
 		{
 		try
 			{
-			this.webcam = CustomWebcam.getInstance();
+			this.webcam = createWebcam();
 			}
 		catch (WebcamLockException e)
 			{
@@ -42,36 +43,42 @@ public class ImageWorker implements Runnable
 		// 60 fois par secondes, on set l'image sur le panel local et sur le panel distant de l'autre avec RMI
 		while(true) // TODO Changer condition (style "tant que connecté")
 			{
-			if (webcam.isOpen())
+			if (webcam != null)
 				{
-				// la première image sera forcement nouvelle
-				if (webcam.isImageNew())
+				if (webcam.isOpen())
 					{
-					image = webcam.getImage();
-					// Affichage de l'image sur le panel local, accès par Singleton
-					JPanelChat.getInstance().setImageLocal(image);
+					// la première image sera forcement nouvelle
+					if (webcam.isImageNew())
+						{
+						image = webcam.getImage();
+						// Affichage de l'image sur le panel local, accès par Singleton
+						JPanelChat.getInstance().setImageLocal(image);
 
-					// Envoi de l'image par le réseau
-					try
-						{
-						if (Application.getInstance().getRemote() != null)
+						// Envoi de l'image par le réseau
+						try
 							{
-							imageSerializable = new ImageSerializable(image);
-							Application.getInstance().getRemote().setImage(new ImageCrypter(imageSerializable));
+							if (Application.getInstance().getRemote() != null)
+								{
+								if (image != null)
+									{
+									imageSerializable = new ImageSerializable(image);
+									}
+								Application.getInstance().getRemote().setImage(new ImageCrypter(imageSerializable));
+								}
 							}
-						}
-					catch (RemoteException e1)
-						{
-						System.out.println("Erreur remote");
-						e1.printStackTrace();
+						catch (RemoteException e1)
+							{
+							System.out.println("Erreur remote");
+							e1.printStackTrace();
+							}
 						}
 					}
 				}
-
 			else
 				{
 				//ici on pourrait mettre une image d'erreur
 				//image = ;
+
 				}
 
 			try
@@ -88,6 +95,33 @@ public class ImageWorker implements Runnable
 
 		}
 
+	public void openWebcam()
+		{
+		webcam = createWebcam();
+		}
+
+	public void closeWebcam()
+		{
+		webcam.close();
+		}
+
+	private static Webcam createWebcam()
+		{
+		Webcam webcam = Webcam.getDefault();
+		if (webcam == null)
+			{
+			return null;
+			}
+		else
+			{
+			Dimension resolutionVoulue = new Dimension(1920, 1080);
+			Dimension[] tabResolutionAlternative = new Dimension[] { resolutionVoulue, WebcamResolution.HD720.getSize(), WebcamResolution.VGA.getSize(), new Dimension(1680, 1050) };
+			webcam.setCustomViewSizes(tabResolutionAlternative);
+			webcam.setViewSize(resolutionVoulue);
+			webcam.open();
+			return webcam;
+			}
+		}
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/

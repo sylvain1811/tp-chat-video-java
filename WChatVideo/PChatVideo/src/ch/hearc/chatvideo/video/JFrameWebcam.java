@@ -40,7 +40,7 @@ public class JFrameWebcam extends JFrame
 		// JComponent : Instanciation
 		JPanelWebcam webCamPanel = new JPanelWebcam();
 		//Application application = Application.getInstance();
-		ImageWorker worker = new ImageWorker();
+		WebcamWorker worker = new WebcamWorker();
 		Thread t = new Thread(worker);
 		t.start();
 		// Layout : Specification
