@@ -2,6 +2,7 @@
 package ch.hearc.chatvideo.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -80,6 +81,7 @@ public class JPanelPrincipal extends JPanel
 	private void appearance()
 		{
 		setSize(jPanelConfig.getSize());
+		setBackground(Color.WHITE);
 		}
 
 	/*------------------------------------------------------------------*\

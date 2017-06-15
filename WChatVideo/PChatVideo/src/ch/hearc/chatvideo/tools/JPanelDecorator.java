@@ -62,7 +62,7 @@ public class JPanelDecorator extends JPanel
 
 	private void appearance()
 		{
-		// rien
+		//rien
 		}
 
 	/*------------------------------------------------------------------*\

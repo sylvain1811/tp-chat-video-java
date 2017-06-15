@@ -114,25 +114,27 @@ public class JPanelChat extends JPanel
 
 		jPanelWebcams = new JPanel();
 		jPanelWebcams.setPreferredSize(new Dimension(600, 700));
+		jPanelWebcams.setBackground(Color.WHITE);
 
 		jPanelVideoChat = new JPanel();
+		jPanelVideoChat.setBackground(Color.WHITE);
 		jPanelVideoChat.setLayout(new BorderLayout());
 
 		jPanelWebcamDist = new JPanelWebcam();
 		//jPanelWebcamDist.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamDist.add(new JLabel("Webcam correspondant"));
-		jPanelWebcamDist.setBackground(Color.BLACK);
+		jPanelWebcamDist.setBackground(Color.WHITE);
 
 		jPanelWebcamLocal = new JPanelWebcam();
 		//jPanelWebcamLocal.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamLocal.add(new JLabel("Ma webcam"));
-		jPanelWebcamLocal.setBackground(Color.RED);
+		jPanelWebcamLocal.setBackground(Color.WHITE);
 
 		jPanelTextChat = new JPanel();
-		jPanelSaisie = new JPanel();
 		BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setVgap(20);
 		jPanelTextChat.setLayout(borderLayout);
+		jPanelTextChat.setBackground(Color.WHITE);
 
 		sendButton = new JButton("Envoyer");
 
@@ -182,10 +184,12 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonMirroir);
+		jPanelControleWebcam.setBackground(Color.WHITE);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
 		jPanelVideoChat.add(jPanelControleWebcam, BorderLayout.SOUTH);
 
+		jPanelSaisie = new JPanel();
 		jPanelSaisie.setLayout(new BorderLayout());
 		jPanelSaisie.add(messageInput, BorderLayout.CENTER);
 		jPanelSaisie.add(sendButton, BorderLayout.EAST);
@@ -285,6 +289,7 @@ public class JPanelChat extends JPanel
 	private void appearance()
 		{
 		setSize(1000, 800);
+		setBackground(Color.WHITE);
 		}
 
 	/*------------------------------------------------------------------*\
