@@ -36,21 +36,7 @@ public class Application implements Application_I ,Runnable
 
 	private Application()
 		{
-		// Générations de clés privée et publique
-		KeyPairGenerator keyGen;
-		try
-			{
-			keyGen = KeyPairGenerator.getInstance("RSA");
-			keyGen.initialize(1024);
-			KeyPair pair = keyGen.generateKeyPair();
-			this.privateKey = pair.getPrivate();
-			this.publicKeyLocal = pair.getPublic();
-			}
-		catch (NoSuchAlgorithmException e)
-			{
-			e.printStackTrace();
-			}
-
+		createKey();
 		createHeartbeatChecker();
 		createHeartbeatSender();
 		}
@@ -183,6 +169,26 @@ public class Application implements Application_I ,Runnable
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
+
+	/**
+	 * Générations de clés privée et publique
+	 */
+	private void createKey()
+		{
+		KeyPairGenerator keyGen;
+		try
+			{
+			keyGen = KeyPairGenerator.getInstance("RSA");
+			keyGen.initialize(1024);
+			KeyPair pair = keyGen.generateKeyPair();
+			this.privateKey = pair.getPrivate();
+			this.publicKeyLocal = pair.getPublic();
+			}
+		catch (NoSuchAlgorithmException e)
+			{
+			e.printStackTrace();
+			}
+		}
 
 	/**
 	 * Lance un thread qui check que le client soit toujours vivant.
@@ -361,7 +367,7 @@ public class Application implements Application_I ,Runnable
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	private boolean isConnected = false;
+	private boolean isConnected = true;
 	private PrivateKey privateKey;
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
