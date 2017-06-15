@@ -129,7 +129,7 @@ public class Application implements Application_I ,Runnable
 			}
 		}
 
-	public boolean isConnected()
+	public synchronized boolean isConnected()
 		{
 		return this.isConnected;
 		}
@@ -196,7 +196,7 @@ public class Application implements Application_I ,Runnable
 			@Override
 			public void run()
 				{
-				while(isConnected)
+				while(isConnected())
 					{
 					try
 						{
@@ -224,12 +224,12 @@ public class Application implements Application_I ,Runnable
 			@Override
 			public void run()
 				{
-				while(isConnected)
+				while(isConnected())
 					{
 					try
 						{
 						Application.this.getRemote().sendHeartbeat();
-						Thread.sleep(3000);
+						Thread.sleep(1000);
 						}
 					catch (InterruptedException e)
 						{
@@ -237,12 +237,10 @@ public class Application implements Application_I ,Runnable
 						}
 					catch (RemoteException e)
 						{
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						}
 					}
 				}
-
 			});
 		}
 
@@ -330,7 +328,7 @@ public class Application implements Application_I ,Runnable
 			System.out.println("Try connect");
 			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
-			isConnected = true;
+			setConnected(true);
 
 			// On envoie direct la clé publique
 			applicationRemote.setKey(this.publicKeyLocal);
