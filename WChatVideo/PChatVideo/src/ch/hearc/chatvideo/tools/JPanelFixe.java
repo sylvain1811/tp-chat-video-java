@@ -53,12 +53,6 @@ public class JPanelFixe extends JPanel
 		setMinimumSize(dimension);
 		setMaximumSize(dimension);
 		setPreferredSize(dimension);
-
-		//debug
-		//			{
-		//			setBackground(Color.PINK);
-		//			setOpaque(true);
-		//			}
 		}
 
 	/*------------------------------------------------------------------*\

@@ -24,8 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ch.hearc.chatvideo.reseau.Application;
-import ch.hearc.chatvideo.tools.JPanelDecorator;
 import ch.hearc.chatvideo.video.ImageWorker;
+import ch.hearc.cours.gui.tools.JPanelDecorator;
 
 public class JPanelConfig extends JPanel
 	{
@@ -68,7 +68,8 @@ public class JPanelConfig extends JPanel
 		Thread load = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				Properties properties = new Properties();
 				FileInputStream fileInputStream = null;
@@ -124,7 +125,8 @@ public class JPanelConfig extends JPanel
 		Thread store = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				Properties properties = new Properties();
 				FileOutputStream fileOutputStream = null;
@@ -223,7 +225,8 @@ public class JPanelConfig extends JPanel
 		buttonConnexion.addActionListener(new ActionListener()
 			{
 
-			@Override public void actionPerformed(ActionEvent e)
+			@Override
+			public void actionPerformed(ActionEvent e)
 				{
 				// Store les données pour prochain lancement
 				storeProperties();
@@ -235,7 +238,7 @@ public class JPanelConfig extends JPanel
 
 				JPanelDecorator jPanelDecorator = new JPanelDecorator(JPanelChat.getInstance(), 30);
 
-				jPanelPrincipal.add(jPanelDecorator,BorderLayout.CENTER);
+				jPanelPrincipal.add(jPanelDecorator, BorderLayout.CENTER);
 				jPanelPrincipal.setSize(JPanelChat.getInstance().getSize());
 				jPanelPrincipal.setJFramePrincipaleSize(JPanelChat.getInstance().getSize());
 				jPanelPrincipal.repaintJFramePrincipale();
