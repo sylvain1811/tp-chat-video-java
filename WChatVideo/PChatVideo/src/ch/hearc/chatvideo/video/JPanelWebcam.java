@@ -99,7 +99,6 @@ public class JPanelWebcam extends JPanel {
 			} else {
 				g2d.drawImage(this.image, this.getWidth(), 0, -this.getWidth(), this.getHeight(), null);
 			}
-
 		}
 
 	}

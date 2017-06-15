@@ -16,8 +16,8 @@ import java.util.List;
 import org.junit.Assert;
 
 import ch.hearc.chatvideo.gui.JPanelChat;
+import ch.hearc.chatvideo.tools.ImageCrypter;
 import ch.hearc.chatvideo.tools.StringCrypter;
-import ch.hearc.chatvideo.video.ImageSerializable;
 
 import com.bilat.tools.reseau.rmi.NetworkTools;
 import com.bilat.tools.reseau.rmi.RmiTools;
@@ -57,8 +57,7 @@ public class Application implements Application_I ,Runnable
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override
-	public void run()
+	@Override public void run()
 		{
 		System.out.println("[Application]:run");
 
@@ -82,22 +81,19 @@ public class Application implements Application_I ,Runnable
 	|*				RMI				*|
 	\*------------------------------*/
 
-	@Override
-	public void setText(StringCrypter message)
+	@Override public void setText(StringCrypter message)
 		{
 		// Appelée à distance. Il faut décrypter le message avec la clé privée.
 		JPanelChat.getInstance().setText(message.decrypter(this.privateKey));
 		}
 
-	@Override
-	public void setImage(ImageSerializable imageSerialisee)
+	@Override public void setImage(ImageCrypter imageCrypter)
 		{
 		// Appelée à distance. On va mettre à jour le panel de la webcam distante avec l'image reçue en paramètres.
-		JPanelChat.getInstance().setImage(imageSerialisee.getImage());
+		JPanelChat.getInstance().setImage(imageCrypter.decrypter(privateKey).getImage());
 		}
 
-	@Override
-	public void setKey(PublicKey key) throws RemoteException
+	@Override public void setKey(PublicKey key) throws RemoteException
 		{
 		// Appelée à distance. On utilisera cette clé pour crypter les messages à envoyer au correspondant.
 		this.publicKeyDist = key;
@@ -180,8 +176,7 @@ public class Application implements Application_I ,Runnable
 		Thread serverSide = new Thread(new Runnable()
 			{
 
-			@Override
-			public void run()
+			@Override public void run()
 				{
 				try
 					{
@@ -228,8 +223,7 @@ public class Application implements Application_I ,Runnable
 		Thread clientSide = new Thread(new Runnable()
 			{
 
-			@Override
-			public void run()
+			@Override public void run()
 				{
 				Application.this.remote = connect();
 				}

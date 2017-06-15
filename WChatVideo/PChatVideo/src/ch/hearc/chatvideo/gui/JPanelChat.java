@@ -11,8 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.rmi.RemoteException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -132,6 +137,7 @@ public class JPanelChat extends JPanel
 		sendButton = new JButton("Envoyer");
 
 		chatHistory = new JTextArea();
+		chatHistory.setFocusable(false);
 		messageInput = new JTextField();
 		messageInput.setPreferredSize(new Dimension(200, 25));
 
@@ -144,10 +150,37 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam = new JPanel();
 		jPanelControleWebcam.setLayout(new FlowLayout());
 
-		this.buttonGriser = new JButton("Griser");
-		this.buttonMirroir = new JButton("Effet mirroir");
+		buttonGriser = new JButton();
+		try
+			{
+			BufferedImage img = ImageIO.read(new File("images\\colorChange.png"));
+			buttonGriser.setIcon(new ImageIcon(img));
+			}
+		catch (Exception ex)
+			{
+			System.out.println(ex);
+			}
+		buttonGriser.setBorder(BorderFactory.createEmptyBorder());
+		buttonGriser.setContentAreaFilled(false);
+
+		buttonMirroir = new JButton();
+		try
+			{
+			BufferedImage img = ImageIO.read(new File("images\\mirrorBouton.png"));
+			buttonMirroir.setIcon(new ImageIcon(img));
+			}
+		catch (Exception ex)
+			{
+			System.out.println(ex);
+			}
+
+		buttonMirroir.setBorder(BorderFactory.createEmptyBorder());
+		buttonMirroir.setContentAreaFilled(false);
 
 		jPanelControleWebcam.add(buttonGriser);
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonMirroir);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
@@ -226,6 +259,25 @@ public class JPanelChat extends JPanel
 					{
 					sendButton.doClick();
 					}
+				}
+			});
+
+		buttonMirroir.addActionListener(new ActionListener()
+			{
+			@Override public void actionPerformed(ActionEvent e)
+				{
+				jPanelWebcamDist.toggleReversed();
+				jPanelWebcamLocal.toggleReversed();
+				}
+			});
+
+		buttonGriser.addActionListener(new ActionListener()
+			{
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				jPanelWebcamDist.toggleGray();
+				jPanelWebcamLocal.toggleGray();
 				}
 			});
 		}

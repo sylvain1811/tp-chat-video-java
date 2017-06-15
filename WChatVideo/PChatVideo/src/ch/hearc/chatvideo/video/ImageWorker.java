@@ -9,6 +9,7 @@ import com.github.sarxos.webcam.WebcamLockException;
 
 import ch.hearc.chatvideo.gui.JPanelChat;
 import ch.hearc.chatvideo.reseau.Application;
+import ch.hearc.chatvideo.tools.ImageCrypter;
 
 public class ImageWorker implements Runnable
 	{
@@ -26,8 +27,7 @@ public class ImageWorker implements Runnable
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override
-	public void run()
+	@Override public void run()
 		{
 		try
 			{
@@ -57,7 +57,7 @@ public class ImageWorker implements Runnable
 						if (Application.getInstance().getRemote() != null)
 							{
 							imageSerializable = new ImageSerializable(image);
-							Application.getInstance().getRemote().setImage(imageSerializable);
+							Application.getInstance().getRemote().setImage(new ImageCrypter(imageSerializable));
 							}
 						}
 					catch (RemoteException e1)
