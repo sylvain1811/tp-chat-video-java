@@ -63,6 +63,7 @@ public class Application implements Application_I ,Runnable
 
 	public synchronized void setConnected(boolean connected)
 		{
+		System.out.println("Set connected : " + connected);
 		this.isConnected = connected;
 		}
 
@@ -95,7 +96,7 @@ public class Application implements Application_I ,Runnable
 	public void sendHeartbeat() throws RemoteException
 		{
 		System.out.println("hb received");
-		this.lastBeatDist = System.currentTimeMillis();
+		this.lastHeartbeatReceived = System.currentTimeMillis();
 		}
 
 	/*------------------------------*\
@@ -104,15 +105,26 @@ public class Application implements Application_I ,Runnable
 
 	public synchronized Application_I getRemote()
 		{
-		if (isConnected || this.lastBeatDist == -1)
+		System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
+		if (isConnected)
 			{
 			return this.remote;
 			}
 		else
 			{
-			JPanelChat.getInstance().traiterErreurReseau();
 			return null;
 			}
+		//		if (isConnected || this.lastHeartbeatReceived == -1)
+		//			{
+		//			return this.remote;
+		//			}
+		//		else
+		//			{
+		//			System.out.println("getrm");
+		//			JPanelChat.getInstance().traiterErreurReseau();
+		//
+		//			return null;
+		//			}
 		}
 
 	public synchronized boolean isConnected()
@@ -124,6 +136,7 @@ public class Application implements Application_I ,Runnable
 		{
 		return this.publicKeyDist;
 		}
+
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
@@ -214,10 +227,12 @@ public class Application implements Application_I ,Runnable
 					try
 						{
 						Thread.sleep(4000);
-						if (System.currentTimeMillis() - Application.this.lastBeatDist > 5000)
+						if (System.currentTimeMillis() - Application.this.lastHeartbeatReceived > 5000)
 							{
 							Application.this.setConnected(false);
-							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
+							System.out.println(System.currentTimeMillis() - Application.this.lastHeartbeatReceived);
+
+							System.out.println("hbchecker");
 							JPanelChat.getInstance().traiterErreurReseau();
 							}
 						}
@@ -320,6 +335,8 @@ public class Application implements Application_I ,Runnable
 			public void run()
 				{
 				Application.this.remote = connect();
+				setConnected(true);
+				System.out.println("Connected :  " + Application.this.isConnected);
 				Application.this.heartbeatSender.start();
 				Application.this.heartbeatChecker.start();
 				}
@@ -342,7 +359,6 @@ public class Application implements Application_I ,Runnable
 			System.out.println("Try connect");
 			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
-			setConnected(true);
 
 			// On envoie direct la clé publique
 			applicationRemote.setKey(this.publicKeyLocal);
@@ -380,7 +396,7 @@ public class Application implements Application_I ,Runnable
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
 	private Application_I remote = null;
-	private long lastBeatDist = -1;
+	private long lastHeartbeatReceived = -1;
 	private Thread heartbeatChecker;
 	private Thread heartbeatSender;
 
