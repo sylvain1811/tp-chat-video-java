@@ -10,16 +10,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -205,29 +206,16 @@ public class JPanelConfig extends JPanel
 		textInputPseudo = new JTextField();
 
 		//Image
-		try
-			{
-			BufferedImage img = ImageIO.read(new File("images\\videoIcon.png"));
-			logo.setIcon(new ImageIcon(img));
-			}
-		catch (IOException e)
-			{
-			e.printStackTrace();
-			}
+		URL url = JPanelConfig.class.getResource("/videoIcon.png");
+		logo.setIcon(new ImageIcon(url));
 
 		//Button
 		buttonConnexion = new JButton();
-		try
-			{
-			BufferedImage img = ImageIO.read(new File("images\\boutonConnexion.png"));
-			buttonConnexion.setIcon(new ImageIcon(img));
-			}
-		catch (Exception e)
-			{
-			e.printStackTrace();
-			}
 		buttonConnexion.setBorder(BorderFactory.createEmptyBorder());
 		buttonConnexion.setContentAreaFilled(false);
+
+		url = JPanelConfig.class.getResource("/boutonConnexion.png");
+		buttonConnexion.setIcon(new ImageIcon(url));
 
 		// Layout : Specification
 			{
@@ -255,6 +243,24 @@ public class JPanelConfig extends JPanel
 
 	private void control()
 		{
+		buttonConnexion.addMouseListener(new MouseAdapter()
+			{
+			URL url = null;
+			@Override
+			public void mouseEntered(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonConnexionHover.png");
+				buttonConnexion.setIcon(new ImageIcon(url));
+				}
+
+			@Override
+			public void mouseExited(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonConnexion.png");
+				buttonConnexion.setIcon(new ImageIcon(url));
+				}
+			});
+
 		buttonConnexion.addActionListener(new ActionListener()
 			{
 
@@ -289,6 +295,7 @@ public class JPanelConfig extends JPanel
 
 		KeyAdapter keyAdapter = new KeyAdapter()
 			{
+
 			@Override
 			public void keyReleased(KeyEvent e)
 				{
@@ -300,8 +307,8 @@ public class JPanelConfig extends JPanel
 
 			};
 
-			textInputIpAdressDist.addKeyListener(keyAdapter);
-			textInputPseudo.addKeyListener(keyAdapter);
+		textInputIpAdressDist.addKeyListener(keyAdapter);
+		textInputPseudo.addKeyListener(keyAdapter);
 
 		}
 
