@@ -51,7 +51,8 @@ public class Application implements Application_I ,Runnable
 			e.printStackTrace();
 			}
 
-		startHeartbeatChecker();
+		createHeartbeatChecker();
+		createHeartbeatSender();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -187,7 +188,7 @@ public class Application implements Application_I ,Runnable
 	 * Lance un thread qui check que le client soit toujours vivant.
 	 * Signale au correspondant qu'on est vivant.
 	 */
-	private void startHeartbeatChecker()
+	private void createHeartbeatChecker()
 		{
 		Application.this.heartbeatChecker = new Thread(new Runnable()
 			{
@@ -199,19 +200,12 @@ public class Application implements Application_I ,Runnable
 					{
 					try
 						{
-						Application.this.getRemote().sendHeartbeat();
-						System.out.println("hb sent");
 						Thread.sleep(3000);
-						System.out.println("fin sleep");
 						if (System.currentTimeMillis() - Application.this.lastBeatDist > 5000)
 							{
 							Application.this.setConnected(false);
 							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
 							}
-						}
-					catch (RemoteException e1)
-						{
-						e1.printStackTrace();
 						}
 					catch (InterruptedException e)
 						{
@@ -219,6 +213,36 @@ public class Application implements Application_I ,Runnable
 						}
 					}
 				}
+			});
+		}
+
+	private void createHeartbeatSender()
+		{
+		Application.this.heartbeatSender = new Thread(new Runnable()
+			{
+
+			@Override
+			public void run()
+				{
+				while(isConnected)
+					{
+					try
+						{
+						Application.this.getRemote().sendHeartbeat();
+						Thread.sleep(3000);
+						}
+					catch (InterruptedException e)
+						{
+						e.printStackTrace();
+						}
+					catch (RemoteException e)
+						{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						}
+					}
+				}
+
 			});
 		}
 
@@ -285,6 +309,7 @@ public class Application implements Application_I ,Runnable
 				{
 				Application.this.remote = connect();
 				Application.this.heartbeatChecker.start();
+				Application.this.heartbeatSender.start();
 				}
 			});
 		clientSide.start();
@@ -338,13 +363,14 @@ public class Application implements Application_I ,Runnable
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	private boolean isConnected = false;
+	private boolean isConnected = true;
 	private PrivateKey privateKey;
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
 	private Application_I remote = null;
 	private long lastBeatDist = -1;
 	private Thread heartbeatChecker;
+	private Thread heartbeatSender;
 
 	/*------------------------------*\
 	|*			  Static			*|
