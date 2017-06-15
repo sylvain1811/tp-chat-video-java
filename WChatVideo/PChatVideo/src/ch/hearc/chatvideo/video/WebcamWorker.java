@@ -69,7 +69,7 @@ public class WebcamWorker implements Runnable
 							}
 						catch (RemoteException e1)
 							{
-							Application.getInstance().setConnected(false);
+							JPanelChat.getInstance().traiterErreurReseau();
 							e1.printStackTrace();
 							}
 						}
