@@ -211,6 +211,7 @@ public class Application implements Application_I ,Runnable
 							{
 							Application.this.setConnected(false);
 							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
+							JPanelChat.getInstance().traiterErreurReseau();
 							}
 						}
 					catch (InterruptedException e)
