@@ -28,7 +28,8 @@ public class WebcamWorker implements Runnable
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override public void run()
+	@Override
+	public void run()
 		{
 		try
 			{
@@ -68,7 +69,7 @@ public class WebcamWorker implements Runnable
 							}
 						catch (RemoteException e1)
 							{
-							System.out.println("Erreur remote");
+							Application.getInstance().setConnected(false);
 							e1.printStackTrace();
 							}
 						}
