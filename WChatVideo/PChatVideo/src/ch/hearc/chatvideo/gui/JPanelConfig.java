@@ -180,7 +180,7 @@ public class JPanelConfig extends JPanel
 
 		//Labels
 		labelIpAdressDist = new JLabel("Adresse IP distante");
-		labelIpAdressLocal = new JLabel("Votre adresse IP : " + Application.getIp().substring(1));
+		labelIpAdressLocal = new JLabel("Votre adresse IP : " + Application.getIp());
 		labelPseudo = new JLabel("Votre pseudo");
 
 		//TextField

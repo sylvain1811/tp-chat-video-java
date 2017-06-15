@@ -147,11 +147,14 @@ public class Application implements Application_I ,Runnable
 		Application.serverName = serverName;
 		}
 
+	/**
+	 * Retourne l'adresse IP de la machine
+	 */
 	public static String getIp()
 		{
 		try
 			{
-			return NetworkTools.localhost("").get(0).toString();
+			return NetworkTools.localhost("").get(0).toString().substring(1);
 			}
 		catch (SocketException e)
 			{
