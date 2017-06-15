@@ -105,7 +105,7 @@ public class Application implements Application_I ,Runnable
 
 	public synchronized Application_I getRemote()
 		{
-		System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
+		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
 		if (isConnected)
 			{
 			return this.remote;
@@ -114,17 +114,6 @@ public class Application implements Application_I ,Runnable
 			{
 			return null;
 			}
-		//		if (isConnected || this.lastHeartbeatReceived == -1)
-		//			{
-		//			return this.remote;
-		//			}
-		//		else
-		//			{
-		//			System.out.println("getrm");
-		//			JPanelChat.getInstance().traiterErreurReseau();
-		//
-		//			return null;
-		//			}
 		}
 
 	public synchronized boolean isConnected()
