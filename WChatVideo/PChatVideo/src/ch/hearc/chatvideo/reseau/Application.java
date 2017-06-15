@@ -306,8 +306,8 @@ public class Application implements Application_I ,Runnable
 			public void run()
 				{
 				Application.this.remote = connect();
-				Application.this.heartbeatChecker.start();
 				Application.this.heartbeatSender.start();
+				Application.this.heartbeatChecker.start();
 				}
 			});
 		clientSide.start();
