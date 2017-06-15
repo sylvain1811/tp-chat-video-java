@@ -10,11 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.net.URL;
 import java.rmi.RemoteException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -136,7 +137,12 @@ public class JPanelChat extends JPanel
 		jPanelTextChat.setLayout(borderLayout);
 		jPanelTextChat.setBackground(Color.WHITE);
 
-		sendButton = new JButton("Envoyer");
+		sendButton = new JButton();
+		URL url = JPanelChat.class.getResource("/sendButton.png");
+		sendButton.setIcon(new ImageIcon(url));
+
+		sendButton.setBorder(BorderFactory.createEmptyBorder());
+		sendButton.setContentAreaFilled(false);
 
 		chatHistory = new JTextArea();
 		chatHistory.setFocusable(false);
@@ -153,28 +159,14 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam.setLayout(new FlowLayout());
 
 		buttonGriser = new JButton();
-		try
-			{
-			BufferedImage img = ImageIO.read(new File("images\\colorChange.png"));
-			buttonGriser.setIcon(new ImageIcon(img));
-			}
-		catch (Exception ex)
-			{
-			System.out.println(ex);
-			}
+		url = JPanelChat.class.getResource("/colorChange.png");
+		buttonGriser.setIcon(new ImageIcon(url));
 		buttonGriser.setBorder(BorderFactory.createEmptyBorder());
 		buttonGriser.setContentAreaFilled(false);
 
 		buttonMirroir = new JButton();
-		try
-			{
-			BufferedImage img = ImageIO.read(new File("images\\mirrorBouton.png"));
-			buttonMirroir.setIcon(new ImageIcon(img));
-			}
-		catch (Exception ex)
-			{
-			System.out.println(ex);
-			}
+		url = JPanelChat.class.getResource("/mirrorBouton.png");
+		buttonMirroir.setIcon(new ImageIcon(url));
 
 		buttonMirroir.setBorder(BorderFactory.createEmptyBorder());
 		buttonMirroir.setContentAreaFilled(false);
@@ -193,6 +185,7 @@ public class JPanelChat extends JPanel
 		jPanelSaisie.setLayout(new BorderLayout());
 		jPanelSaisie.add(messageInput, BorderLayout.CENTER);
 		jPanelSaisie.add(sendButton, BorderLayout.EAST);
+		jPanelSaisie.setBackground(Color.WHITE);
 
 		jPanelTextChat.add(chatHistory, BorderLayout.CENTER);
 		jPanelTextChat.add(jPanelSaisie, BorderLayout.SOUTH);
@@ -287,6 +280,46 @@ public class JPanelChat extends JPanel
 				jPanelWebcamLocal.toggleGray();
 				}
 			});
+
+		buttonGriser.addMouseListener(new MouseAdapter()
+			{
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+				{
+				isBlack = !isBlack;
+				URL url = null;
+				if (isBlack)
+					{
+					url = JPanelChat.class.getResource("/colorChangeHover.png");
+					}
+				else
+					{
+					url = JPanelChat.class.getResource("/colorChange.png");
+					}
+				buttonGriser.setIcon(new ImageIcon(url));
+				}
+			});
+
+		buttonMirroir.addMouseListener(new MouseAdapter()
+			{
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+				{
+				isRight = !isRight;
+				URL url = null;
+				if (isRight)
+					{
+					url = JPanelChat.class.getResource("/mirrorBouton.png");
+					}
+				else
+					{
+					url = JPanelChat.class.getResource("/mirrorBoutonHover.png");
+					}
+				buttonMirroir.setIcon(new ImageIcon(url));
+				}
+			});
 		}
 
 	private void appearance()
@@ -317,5 +350,7 @@ public class JPanelChat extends JPanel
 	private JButton buttonMirroir;
 	private JButton buttonGriser;
 	private JSplitPane splitPane;
+	private boolean isBlack = false;
+	private boolean isRight = true;
 
 	}
