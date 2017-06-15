@@ -107,6 +107,7 @@ public class Application implements Application_I ,Runnable
 	@Override
 	public void sendHeartbeat() throws RemoteException
 		{
+		System.out.println("hb received");
 		this.lastBeatDist = System.currentTimeMillis();
 		}
 
@@ -198,9 +199,11 @@ public class Application implements Application_I ,Runnable
 					{
 					try
 						{
-						Thread.sleep(1000);
-						Application.this.remote.sendHeartbeat();
-						if (System.currentTimeMillis() - Application.this.lastBeatDist > 1200)
+						Application.this.getRemote().sendHeartbeat();
+						System.out.println("hb sent");
+						Thread.sleep(3000);
+						System.out.println("fin sleep");
+						if (System.currentTimeMillis() - Application.this.lastBeatDist > 5000)
 							{
 							Application.this.setConnected(false);
 							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
