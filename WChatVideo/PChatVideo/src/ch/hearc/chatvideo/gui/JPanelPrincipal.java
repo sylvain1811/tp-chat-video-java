@@ -1,10 +1,12 @@
 
 package ch.hearc.chatvideo.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
+
+import ch.hearc.chatvideo.tools.JPanelDecorator;
 
 public class JPanelPrincipal extends JPanel
 	{
@@ -28,6 +30,7 @@ public class JPanelPrincipal extends JPanel
 	public void repaintJFramePrincipale()
 		{
 		jFramePrincipale.repaint();
+		jFramePrincipale.setResizable(true);
 		}
 
 	/*------------------------------*\
@@ -54,18 +57,19 @@ public class JPanelPrincipal extends JPanel
 		{
 		// JComponent : Instanciation
 		jPanelConfig = new JPanelConfig(this);
+		JPanelDecorator jPanelDecorator = new JPanelDecorator(jPanelConfig, 50);
 
 		// Layout : Specification
 			{
-			FlowLayout flowlayout = new FlowLayout(FlowLayout.CENTER);
-			setLayout(flowlayout);
+			BorderLayout borderLayout = new BorderLayout();
+			setLayout(borderLayout);
 
 			// flowlayout.setHgap(20);
 			// flowlayout.setVgap(20);
 			}
 
 		// JComponent : add
-		add(jPanelConfig);
+		add(jPanelDecorator, BorderLayout.CENTER);
 		}
 
 	private void control()

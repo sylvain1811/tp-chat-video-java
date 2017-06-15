@@ -1,19 +1,23 @@
 
-package ch.hearc.chatvideo.video;
+package ch.hearc.chatvideo.tools;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JFrame;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-public class JFrameWebcam extends JFrame
+public class JPanelDecorator extends JPanel
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JFrameWebcam()
+	public JPanelDecorator(JComponent component, int marge)
 		{
+		this.component = component;
+		this.marge = marge;
+
 		geometry();
 		control();
 		appearance();
@@ -23,56 +27,55 @@ public class JFrameWebcam extends JFrame
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
 	private void geometry()
 		{
-		// JComponent : Instanciation
-		JPanelWebcam webCamPanel = new JPanelWebcam();
-		//Application application = Application.getInstance();
-		ImageWorker worker = new ImageWorker();
-		Thread t = new Thread(worker);
-		t.start();
+		jPanelEst = new JPanelFixe(marge);
+		jPanelOuest = new JPanelFixe(marge);
+		jPanelNord = new JPanelFixe(marge);
+		jPanelSud = new JPanelFixe(marge);
+
 		// Layout : Specification
 			{
 			BorderLayout borderLayout = new BorderLayout();
 			setLayout(borderLayout);
 
-			// borderLayout.setHgap(20);
-			// borderLayout.setVgap(20);
+			borderLayout.setHgap(0);
+			borderLayout.setVgap(0);
 			}
 
 		// JComponent : add
-		add(webCamPanel, BorderLayout.CENTER);
+		add(component, BorderLayout.CENTER);
+		add(jPanelEst,BorderLayout.EAST);
+		add(jPanelOuest,BorderLayout.WEST);
+		add(jPanelNord,BorderLayout.NORTH);
+		add(jPanelSud,BorderLayout.SOUTH);
 		}
 
 	private void control()
 		{
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		// rien
 		}
 
 	private void appearance()
 		{
-		setSize(1000, 1000);
-		setTitle("Webcam");
-		setLocationRelativeTo(null); // frame centrer
-		setVisible(true); // last!
+		// rien
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	// Tools
+	//input
+	private JComponent component;
+	private int marge;
 
+	// Tools
+	private JPanelFixe jPanelNord;
+	private JPanelFixe jPanelSud;
+	private JPanelFixe jPanelOuest;
+	private JPanelFixe jPanelEst;
 	}

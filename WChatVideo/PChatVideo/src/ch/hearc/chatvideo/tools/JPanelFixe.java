@@ -1,19 +1,21 @@
 
-package ch.hearc.chatvideo.video;
+package ch.hearc.chatvideo.tools;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class JFrameWebcam extends JFrame
+public class JPanelFixe extends JPanel
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JFrameWebcam()
+	public JPanelFixe(int size)
 		{
+		this.size = size;
+
 		geometry();
 		control();
 		appearance();
@@ -37,42 +39,35 @@ public class JFrameWebcam extends JFrame
 
 	private void geometry()
 		{
-		// JComponent : Instanciation
-		JPanelWebcam webCamPanel = new JPanelWebcam();
-		//Application application = Application.getInstance();
-		ImageWorker worker = new ImageWorker();
-		Thread t = new Thread(worker);
-		t.start();
-		// Layout : Specification
-			{
-			BorderLayout borderLayout = new BorderLayout();
-			setLayout(borderLayout);
-
-			// borderLayout.setHgap(20);
-			// borderLayout.setVgap(20);
-			}
-
-		// JComponent : add
-		add(webCamPanel, BorderLayout.CENTER);
+		//rien
 		}
 
 	private void control()
 		{
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		// rien
 		}
 
 	private void appearance()
 		{
-		setSize(1000, 1000);
-		setTitle("Webcam");
-		setLocationRelativeTo(null); // frame centrer
-		setVisible(true); // last!
+		dimension = new Dimension(size, size);
+		setMinimumSize(dimension);
+		setMaximumSize(dimension);
+		setPreferredSize(dimension);
+
+		//debug
+		//			{
+		//			setBackground(Color.PINK);
+		//			setOpaque(true);
+		//			}
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	// Tools
+	//Inputs
+	private int size;
 
+	// Tools
+	private Dimension dimension;
 	}

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -24,9 +25,7 @@ import org.junit.Assert;
 
 import ch.hearc.chatvideo.reseau.Application;
 import ch.hearc.chatvideo.tools.StringCrypter;
-import ch.hearc.chatvideo.video.CustomWebcam;
-import ch.hearc.chatvideo.video.JPanelWebcamDist;
-import ch.hearc.chatvideo.video.JPanelWebcamLocal;
+import ch.hearc.chatvideo.video.JPanelWebcam;
 
 /*---------------------------------------------------------------*\
 |*							SINGLETON							 *|
@@ -111,20 +110,20 @@ public class JPanelChat extends JPanel
 		jPanelWebcams = new JPanel();
 		jPanelWebcams.setPreferredSize(new Dimension(600, 700));
 
-		JPanel jPanelVideoChat = new JPanel();
+		jPanelVideoChat = new JPanel();
 		jPanelVideoChat.setLayout(new BorderLayout());
 
-		jPanelWebcamDist = new JPanelWebcamDist();
+		jPanelWebcamDist = new JPanelWebcam();
 		//jPanelWebcamDist.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamDist.add(new JLabel("Webcam correspondant"));
 		jPanelWebcamDist.setBackground(Color.BLACK);
 
-		jPanelWebcamLocal = CustomWebcam.createWebcamPanel();
+		jPanelWebcamLocal = new JPanelWebcam();
 		//jPanelWebcamLocal.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamLocal.add(new JLabel("Ma webcam"));
 		jPanelWebcamLocal.setBackground(Color.RED);
 
-		JPanel jPanelTextChat = new JPanel();
+		jPanelTextChat = new JPanel();
 		jPanelSaisie = new JPanel();
 		BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setVgap(20);
@@ -142,7 +141,7 @@ public class JPanelChat extends JPanel
 		jPanelWebcams.add(jPanelWebcamLocal);
 		jPanelWebcams.add(jPanelWebcamDist);
 
-		JPanel jPanelControleWebcam = new JPanel();
+		jPanelControleWebcam = new JPanel();
 		jPanelControleWebcam.setLayout(new FlowLayout());
 
 		this.buttonGriser = new JButton("Griser");
@@ -161,6 +160,9 @@ public class JPanelChat extends JPanel
 		jPanelTextChat.add(chatHistory, BorderLayout.CENTER);
 		jPanelTextChat.add(jPanelSaisie, BorderLayout.SOUTH);
 
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanelVideoChat, jPanelTextChat);
+		splitPane.setDividerLocation(500);
+
 		// Layout : Specification
 			{
 			BorderLayout layout = new BorderLayout();
@@ -169,8 +171,9 @@ public class JPanelChat extends JPanel
 			}
 
 		// JComponent : add
-		add(jPanelVideoChat, BorderLayout.CENTER);
-		add(jPanelTextChat, BorderLayout.EAST);
+		add(splitPane, BorderLayout.CENTER);
+		//add(jPanelVideoChat, BorderLayout.CENTER);
+		//add(jPanelTextChat, BorderLayout.EAST);
 
 		}
 
@@ -243,13 +246,17 @@ public class JPanelChat extends JPanel
 	// Tools
 	private static JPanelChat INSTANCE = null;
 	private JPanel jPanelWebcams;
-	private JPanelWebcamLocal jPanelWebcamLocal;
-	private JPanelWebcamDist jPanelWebcamDist;
+	private JPanelWebcam jPanelWebcamLocal;
+	private JPanelWebcam jPanelWebcamDist;
+	private JPanel jPanelVideoChat;
 	private JPanel jPanelSaisie;
+	private JPanel jPanelTextChat;
+	private JPanel jPanelControleWebcam;
 	private JTextArea chatHistory;
 	private JTextField messageInput;
 	private JButton sendButton;
 	private JButton buttonMirroir;
 	private JButton buttonGriser;
+	private JSplitPane splitPane;
 
 	}

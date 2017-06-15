@@ -1,10 +1,12 @@
 
 package ch.hearc.chatvideo.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,12 +15,16 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ch.hearc.chatvideo.reseau.Application;
+import ch.hearc.chatvideo.tools.JPanelDecorator;
 import ch.hearc.chatvideo.video.ImageWorker;
 
 public class JPanelConfig extends JPanel
@@ -62,8 +68,7 @@ public class JPanelConfig extends JPanel
 		Thread load = new Thread(new Runnable()
 			{
 
-			@Override
-			public void run()
+			@Override public void run()
 				{
 				Properties properties = new Properties();
 				FileInputStream fileInputStream = null;
@@ -119,8 +124,7 @@ public class JPanelConfig extends JPanel
 		Thread store = new Thread(new Runnable()
 			{
 
-			@Override
-			public void run()
+			@Override public void run()
 				{
 				Properties properties = new Properties();
 				FileOutputStream fileOutputStream = null;
@@ -179,18 +183,28 @@ public class JPanelConfig extends JPanel
 
 		//TextField
 		textInputIpAdressDist = new JTextField();
+		textInputIpAdressDist.setMaximumSize(new Dimension(150, 20));
 		textInputPseudo = new JTextField();
 
 		//Button
-		buttonConnexion = new JButton("Connexion");
+		buttonConnexion = new JButton();
+		try
+			{
+			BufferedImage img = ImageIO.read(new File("images\\boutonConnexion.png"));
+			buttonConnexion.setIcon(new ImageIcon(img));
+			}
+		catch (Exception ex)
+			{
+			System.out.println(ex);
+			}
+		buttonConnexion.setBorder(BorderFactory.createEmptyBorder());
+		buttonConnexion.setContentAreaFilled(false);
 
 		// Layout : Specification
 			{
 			GridLayout gridlayout = new GridLayout(0, 1);
 			setLayout(gridlayout);
 
-			// flowlayout.setHgap(20);
-			// flowlayout.setVgap(20);
 			gridlayout.setHgap(20);
 			}
 
@@ -209,18 +223,19 @@ public class JPanelConfig extends JPanel
 		buttonConnexion.addActionListener(new ActionListener()
 			{
 
-			@Override
-			public void actionPerformed(ActionEvent e)
+			@Override public void actionPerformed(ActionEvent e)
 				{
 				// Store les données pour prochain lancement
 				storeProperties();
 
 				// Remplace le panel config par le panel chat (contenant chat texte et les vidéos)
-				jPanelPrincipal.remove(JPanelConfig.this);
+				jPanelPrincipal.removeAll();
 
 				JPanelChat.init(textInputPseudo.getText());
 
-				jPanelPrincipal.add(JPanelChat.getInstance());
+				JPanelDecorator jPanelDecorator = new JPanelDecorator(JPanelChat.getInstance(), 30);
+
+				jPanelPrincipal.add(jPanelDecorator,BorderLayout.CENTER);
 				jPanelPrincipal.setSize(JPanelChat.getInstance().getSize());
 				jPanelPrincipal.setJFramePrincipaleSize(JPanelChat.getInstance().getSize());
 				jPanelPrincipal.repaintJFramePrincipale();
@@ -239,8 +254,8 @@ public class JPanelConfig extends JPanel
 
 	private void appearance()
 		{
-		setSize(350, 180);
-		setMinimumSize(new Dimension(350, 180));
+		setSize(400, 350);
+		setMinimumSize(new Dimension(400, 350));
 		}
 
 	/*------------------------------------------------------------------*\

@@ -9,14 +9,14 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class JPanelWebcamDist extends JPanel
+public class JPanelWebcam extends JPanel
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JPanelWebcamDist()
+	public JPanelWebcam()
 		{
 		isGrey = false;
 		isCamDisplayed = false;
@@ -127,7 +127,7 @@ public class JPanelWebcamDist extends JPanel
 			//				}
 			// TODO Scale image en fonction de la taille de la fenetre (remplacer 600, 350)
 			// Idée : écouter les redimensionnement des panels, et adapter
-			g2d.drawImage(this.image, 0, 0, 600, 350, null);
+			g2d.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), null);
 
 			}
 

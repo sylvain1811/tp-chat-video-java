@@ -50,6 +50,7 @@ public class JFramePrincipale extends JFrame
 		{
 		setTitle("Chat vidéo");
 		setSize(jPanelPrincipal.getSize());
+		setResizable(false);
 		setLocationRelativeTo(null); // frame centrer
 		setVisible(true); // last!
 		}
