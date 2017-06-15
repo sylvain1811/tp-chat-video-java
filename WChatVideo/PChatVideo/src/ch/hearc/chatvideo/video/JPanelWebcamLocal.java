@@ -130,7 +130,6 @@ public class JPanelWebcamLocal extends JPanel
 			// Idée : écouter les redimensionnement des panels, et adapter
 			g2d.drawImage(this.image, 0, 0, 600, 350, null);
 			}
-
 		}
 
 	/*------------------------------------------------------------------*\
