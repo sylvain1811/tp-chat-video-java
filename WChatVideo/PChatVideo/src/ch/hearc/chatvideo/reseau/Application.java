@@ -51,13 +51,15 @@ public class Application implements Application_I ,Runnable
 			e.printStackTrace();
 			}
 
+		startHeartbeatChecker();
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override public void run()
+	@Override
+	public void run()
 		{
 		System.out.println("[Application]:run");
 
@@ -81,22 +83,31 @@ public class Application implements Application_I ,Runnable
 	|*				RMI				*|
 	\*------------------------------*/
 
-	@Override public void setText(StringCrypter message)
+	@Override
+	public void setText(StringCrypter message)
 		{
 		// Appelée à distance. Il faut décrypter le message avec la clé privée.
 		JPanelChat.getInstance().setText(message.decrypter(this.privateKey));
 		}
 
-	@Override public void setImage(ImageCrypter imageCrypter)
+	@Override
+	public void setImage(ImageCrypter imageCrypter)
 		{
 		// Appelée à distance. On va mettre à jour le panel de la webcam distante avec l'image reçue en paramètres.
 		JPanelChat.getInstance().setImage(imageCrypter.decrypter(privateKey).getImage());
 		}
 
-	@Override public void setKey(PublicKey key) throws RemoteException
+	@Override
+	public void setKey(PublicKey key) throws RemoteException
 		{
 		// Appelée à distance. On utilisera cette clé pour crypter les messages à envoyer au correspondant.
 		this.publicKeyDist = key;
+		}
+
+	@Override
+	public void sendHeartbeat() throws RemoteException
+		{
+		this.lastBeatDist = System.currentTimeMillis();
 		}
 
 	/*------------------------------*\
@@ -105,7 +116,15 @@ public class Application implements Application_I ,Runnable
 
 	public Application_I getRemote()
 		{
-		return this.remote;
+		if (isConnected)
+			{
+			return this.remote;
+			}
+		else
+			{
+			JPanelChat.getInstance().traiterErreurReseau();
+			return null;
+			}
 		}
 
 	public boolean isConnected()
@@ -143,11 +162,14 @@ public class Application implements Application_I ,Runnable
 		Application.serverName = serverName;
 		}
 
+	/**
+	 * Retourne l'adresse IP de la machine
+	 */
 	public static String getIp()
 		{
 		try
 			{
-			return NetworkTools.localhost("").get(0).toString();
+			return NetworkTools.localhost("").get(0).toString().substring(1);
 			}
 		catch (SocketException e)
 			{
@@ -159,6 +181,43 @@ public class Application implements Application_I ,Runnable
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
+
+	/**
+	 * Lance un thread qui check que le client soit toujours vivant.
+	 * Signale au correspondant qu'on est vivant.
+	 */
+	private void startHeartbeatChecker()
+		{
+		Application.this.heartbeatChecker = new Thread(new Runnable()
+			{
+
+			@Override
+			public void run()
+				{
+				while(isConnected)
+					{
+					try
+						{
+						Thread.sleep(500);
+						Application.this.remote.sendHeartbeat();
+						if (System.currentTimeMillis() - Application.this.lastBeatDist > 1000)
+							{
+							Application.this.setConnected(false);
+							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
+							}
+						}
+					catch (RemoteException e1)
+						{
+						e1.printStackTrace();
+						}
+					catch (InterruptedException e)
+						{
+						e.printStackTrace();
+						}
+					}
+				}
+			});
+		}
 
 	/*------------------------------*\
 	|*			  Server			*|
@@ -173,19 +232,17 @@ public class Application implements Application_I ,Runnable
 		Thread serverSide = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				try
 					{
-					//RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, SettingsRMI.APPLICATION_PORT);
-
 					//  On prend la première adresse ETH pour se partager
 					List<InetAddress> adresses = NetworkTools.localhost("");
 					System.out.println(adresses);
 					System.out.println(adresses.get(0));
 					RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, adresses.get(0), SettingsRMI.APPLICATION_PORT);
 					RmiTools.shareObject(Application.this, rmiURL);
-
 					}
 				catch (RemoteException e)
 					{
@@ -220,9 +277,11 @@ public class Application implements Application_I ,Runnable
 		Thread clientSide = new Thread(new Runnable()
 			{
 
-			@Override public void run()
+			@Override
+			public void run()
 				{
 				Application.this.remote = connect();
+				Application.this.heartbeatChecker.start();
 				}
 			});
 		clientSide.start();
@@ -281,6 +340,8 @@ public class Application implements Application_I ,Runnable
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
 	private Application_I remote = null;
+	private long lastBeatDist;
+	private Thread heartbeatChecker;
 
 	/*------------------------------*\
 	|*			  Static			*|

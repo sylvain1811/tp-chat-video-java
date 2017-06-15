@@ -73,8 +73,7 @@ public class JPanelChat extends JPanel
 		{
 		// Affiche un message et indique que la remote est déconnectée
 		JOptionPane.showMessageDialog(this, "Une déconnexion est apparue.", "Erreur", JOptionPane.ERROR_MESSAGE);
-		Application.getInstance().setConnected(false);
-		// TODO Retour au menu de connexion
+		// TODO Sysexit quand ok appuyé.
 		}
 
 	/*------------------------------*\
@@ -114,25 +113,27 @@ public class JPanelChat extends JPanel
 
 		jPanelWebcams = new JPanel();
 		jPanelWebcams.setPreferredSize(new Dimension(600, 700));
+		jPanelWebcams.setBackground(Color.WHITE);
 
 		jPanelVideoChat = new JPanel();
+		jPanelVideoChat.setBackground(Color.WHITE);
 		jPanelVideoChat.setLayout(new BorderLayout());
 
 		jPanelWebcamDist = new JPanelWebcam();
 		//jPanelWebcamDist.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamDist.add(new JLabel("Webcam correspondant"));
-		jPanelWebcamDist.setBackground(Color.BLACK);
+		jPanelWebcamDist.setBackground(Color.WHITE);
 
 		jPanelWebcamLocal = new JPanelWebcam();
 		//jPanelWebcamLocal.setPreferredSize(new Dimension(500, 300));
 		jPanelWebcamLocal.add(new JLabel("Ma webcam"));
-		jPanelWebcamLocal.setBackground(Color.RED);
+		jPanelWebcamLocal.setBackground(Color.WHITE);
 
 		jPanelTextChat = new JPanel();
-		jPanelSaisie = new JPanel();
 		BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setVgap(20);
 		jPanelTextChat.setLayout(borderLayout);
+		jPanelTextChat.setBackground(Color.WHITE);
 
 		sendButton = new JButton("Envoyer");
 
@@ -182,10 +183,12 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonMirroir);
+		jPanelControleWebcam.setBackground(Color.WHITE);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
 		jPanelVideoChat.add(jPanelControleWebcam, BorderLayout.SOUTH);
 
+		jPanelSaisie = new JPanel();
 		jPanelSaisie.setLayout(new BorderLayout());
 		jPanelSaisie.add(messageInput, BorderLayout.CENTER);
 		jPanelSaisie.add(sendButton, BorderLayout.EAST);
@@ -264,7 +267,9 @@ public class JPanelChat extends JPanel
 
 		buttonMirroir.addActionListener(new ActionListener()
 			{
-			@Override public void actionPerformed(ActionEvent e)
+
+			@Override
+			public void actionPerformed(ActionEvent e)
 				{
 				jPanelWebcamDist.toggleReversed();
 				jPanelWebcamLocal.toggleReversed();
@@ -273,6 +278,7 @@ public class JPanelChat extends JPanel
 
 		buttonGriser.addActionListener(new ActionListener()
 			{
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
@@ -285,6 +291,7 @@ public class JPanelChat extends JPanel
 	private void appearance()
 		{
 		setSize(1000, 800);
+		setBackground(Color.WHITE);
 		}
 
 	/*------------------------------------------------------------------*\

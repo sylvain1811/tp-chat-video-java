@@ -1,6 +1,7 @@
 
 package ch.hearc.chatvideo.tools;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -53,12 +54,8 @@ public class JPanelFixe extends JPanel
 		setMinimumSize(dimension);
 		setMaximumSize(dimension);
 		setPreferredSize(dimension);
+		setBackground(Color.WHITE);
 
-		//debug
-		//			{
-		//			setBackground(Color.PINK);
-		//			setOpaque(true);
-		//			}
 		}
 
 	/*------------------------------------------------------------------*\

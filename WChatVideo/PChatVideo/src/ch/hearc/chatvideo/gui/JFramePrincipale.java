@@ -2,7 +2,9 @@
 package ch.hearc.chatvideo.gui;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class JFramePrincipale extends JFrame
@@ -53,6 +55,9 @@ public class JFramePrincipale extends JFrame
 		setResizable(false);
 		setLocationRelativeTo(null); // frame centrer
 		setVisible(true); // last!
+
+		ImageIcon img = new ImageIcon("images\\videoIcon.png");
+		setIconImage(img.getImage());
 		}
 
 	/*------------------------------------------------------------------*\

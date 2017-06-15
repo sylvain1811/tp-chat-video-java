@@ -27,4 +27,9 @@ public interface Application_I extends Remote
 	 */
 	public void setKey(PublicKey key) throws RemoteException;
 
+	/**
+	 * Envoi régulier de heartbeat. Permet de détecter les déconnexions.
+	 */
+	public void sendHeartbeat() throws RemoteException;
+
 	}
