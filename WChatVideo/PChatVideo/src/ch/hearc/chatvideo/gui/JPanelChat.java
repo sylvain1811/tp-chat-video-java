@@ -73,8 +73,7 @@ public class JPanelChat extends JPanel
 		{
 		// Affiche un message et indique que la remote est déconnectée
 		JOptionPane.showMessageDialog(this, "Une déconnexion est apparue.", "Erreur", JOptionPane.ERROR_MESSAGE);
-		Application.getInstance().setConnected(false);
-		// TODO Retour au menu de connexion
+		// TODO Sysexit quand ok appuyé.
 		}
 
 	/*------------------------------*\
@@ -264,7 +263,9 @@ public class JPanelChat extends JPanel
 
 		buttonMirroir.addActionListener(new ActionListener()
 			{
-			@Override public void actionPerformed(ActionEvent e)
+
+			@Override
+			public void actionPerformed(ActionEvent e)
 				{
 				jPanelWebcamDist.toggleReversed();
 				jPanelWebcamLocal.toggleReversed();
@@ -273,6 +274,7 @@ public class JPanelChat extends JPanel
 
 		buttonGriser.addActionListener(new ActionListener()
 			{
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
