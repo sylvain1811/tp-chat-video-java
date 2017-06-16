@@ -169,13 +169,23 @@ public class JPanelChat extends JPanel
 		buttonMirroir.setBorder(BorderFactory.createEmptyBorder());
 		buttonMirroir.setContentAreaFilled(false);
 
-		buttonSnapShot = new JButton("Photo");
+		buttonSnapShot = new JButton();
+		url = JPanelChat.class.getResource("/boutonSnapShot.png");
+		buttonSnapShot.setIcon(new ImageIcon(url));
+
+		buttonSnapShot.setBorder(BorderFactory.createEmptyBorder());
+		buttonSnapShot.setContentAreaFilled(false);
+
+		buttonToggleVideo = new JButton();
 
 		jPanelControleWebcam.add(buttonGriser);
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonMirroir);
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonSnapShot);
 		jPanelControleWebcam.setBackground(Color.WHITE);
 
@@ -329,7 +339,27 @@ public class JPanelChat extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
+				webcamWorker.setRequestImageTrue();
+				}
+			});
 
+		buttonSnapShot.addMouseListener(new MouseAdapter()
+			{
+
+			URL url = null;
+
+			@Override
+			public void mouseEntered(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonSnapShotHover.png");
+				buttonSnapShot.setIcon(new ImageIcon(url));
+				}
+
+			@Override
+			public void mouseExited(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonSnapShot.png");
+				buttonSnapShot.setIcon(new ImageIcon(url));
 				}
 			});
 		}
@@ -363,6 +393,7 @@ public class JPanelChat extends JPanel
 	private JButton buttonMirroir;
 	private JButton buttonGriser;
 	private JButton buttonSnapShot;
+	private JButton buttonToggleVideo;
 	private JSplitPane splitPane;
 	private boolean isBlack = false;
 	private boolean isRight = true;

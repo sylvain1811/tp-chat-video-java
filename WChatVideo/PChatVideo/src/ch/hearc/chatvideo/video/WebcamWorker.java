@@ -60,7 +60,7 @@ public class WebcamWorker implements Runnable
 							{
 							try
 								{
-								ImageIO.write(image, "PNG", new File("capture"+System.currentTimeMillis()+".png"));
+								ImageIO.write(image, "PNG", new File("capture" + System.currentTimeMillis() + ".png"));
 								}
 							catch (IOException e)
 								{
@@ -122,9 +122,11 @@ public class WebcamWorker implements Runnable
 		{
 		webcam.close();
 		}
-	public void setRequestImageTrue(){
+
+	public void setRequestImageTrue()
+		{
 		requestImage = true;
-	}
+		}
 
 	private static Webcam createWebcam()
 		{
