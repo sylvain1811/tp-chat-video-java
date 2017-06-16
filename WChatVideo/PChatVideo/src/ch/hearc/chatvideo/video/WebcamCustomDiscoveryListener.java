@@ -31,7 +31,7 @@ public class WebcamCustomDiscoveryListener implements WebcamDiscoveryListener
 	public void webcamFound(WebcamDiscoveryEvent event)
 		{
 		System.out.format("Webcam connected: %s \n", event.getWebcam().getName());
-		worker.openWebcam();
+		worker.renewWebcam();
 		}
 
 	@Override
