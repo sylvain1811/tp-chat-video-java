@@ -312,21 +312,21 @@ public class Application implements Application_I ,Runnable
 	 */
 	private void clientSide()
 		{
-		/*Thread clientSide = new Thread(new Runnable()
+		Thread clientSide = new Thread(new Runnable()
 			{
 
 			@Override
 			public void run()
-				{*/
-		Application.this.remote = connect();
-		setConnected(true);
-		System.out.println("Connected :  " + Application.this.isConnected);
-		Application.this.heartbeatSender.start();
-		Application.this.heartbeatChecker.start();
+				{
+				Application.this.remote = connect();
+				setConnected(true);
+				System.out.println("Connected :  " + Application.this.isConnected);
+				Application.this.heartbeatSender.start();
+				Application.this.heartbeatChecker.start();
+				}
+			});
+		clientSide.start();
 		}
-	/*});
-	clientSide.start();
-	}*/
 
 	/**
 	 * Tente de se connecter à une Application distante avec RMI
