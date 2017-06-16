@@ -146,8 +146,12 @@ public class JPanelChat extends JPanel
 
 		chatHistory = new JTextArea();
 		chatHistory.setFocusable(false);
+		chatHistory.setLineWrap(true);
+		chatHistory.setWrapStyleWord(true);
+		chatHistory.setFont(chatHistory.getFont().deriveFont(18f));
 		messageInput = new JTextField();
 		messageInput.setPreferredSize(new Dimension(200, 25));
+		messageInput.setFont(messageInput.getFont().deriveFont(18f));
 
 		GridLayout gridLayout = new GridLayout(0, 1);
 
