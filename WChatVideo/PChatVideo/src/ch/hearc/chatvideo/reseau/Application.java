@@ -107,12 +107,10 @@ public class Application implements Application_I ,Runnable
 		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
 		if (isConnected)
 			{
-			System.out.println("connected");
 			return this.remote;
 			}
 		else
 			{
-			System.out.println("Remote disconnected");
 			return null;
 			}
 		}
