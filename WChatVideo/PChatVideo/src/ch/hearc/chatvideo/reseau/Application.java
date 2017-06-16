@@ -219,8 +219,7 @@ public class Application implements Application_I ,Runnable
 							{
 							Application.this.setConnected(false);
 							System.out.println(System.currentTimeMillis() - Application.this.lastHeartbeatReceived);
-
-							System.out.println("hbchecker");
+							System.out.println("hbchecker error");
 							JPanelChat.getInstance().traiterErreurReseau();
 							}
 						}
@@ -318,13 +317,12 @@ public class Application implements Application_I ,Runnable
 			@Override
 			public void run()
 				{*/
-				Application.this.remote = connect();
-				setConnected(true);
-				System.out.println("Connected :  " + Application.this.isConnected);
-				Application.this.heartbeatSender.start();
-				Application.this.heartbeatChecker.start();
-				/*}
-			});
+		Application.this.remote = connect();
+		System.out.println("Connected :  " + Application.this.isConnected);
+		Application.this.heartbeatSender.start();
+		Application.this.heartbeatChecker.start();
+		/*}
+		});
 		clientSide.start();*/
 		}
 
@@ -344,6 +342,8 @@ public class Application implements Application_I ,Runnable
 			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
 
+			setConnected(true);
+
 			// On envoie direct la clé publique
 			applicationRemote.setKey(this.publicKeyLocal);
 			return applicationRemote;
@@ -353,6 +353,7 @@ public class Application implements Application_I ,Runnable
 			{
 			System.err.println("[Application]:fail to reach host: " + e);
 			e.printStackTrace();
+			setConnected(false);
 			return null;
 			}
 
@@ -360,6 +361,7 @@ public class Application implements Application_I ,Runnable
 			{
 			System.err.println("[Application]: " + e);
 			e.printStackTrace();
+			setConnected(false);
 			return null;
 			}
 
@@ -367,6 +369,7 @@ public class Application implements Application_I ,Runnable
 			{
 			System.err.println("[Application]: fail connection remote object");
 			e.printStackTrace();
+			setConnected(false);
 			return null;
 			}
 		}
