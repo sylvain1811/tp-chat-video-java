@@ -79,14 +79,6 @@ public class JPanelChat extends JPanel
 		}
 
 	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
-	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
 
@@ -239,6 +231,7 @@ public class JPanelChat extends JPanel
 						catch (RemoteException e1)
 							{
 							// TODO Traiter erreur remote setText
+
 							JPanelChat.getInstance().traiterErreurReseau();
 							e1.printStackTrace();
 							}

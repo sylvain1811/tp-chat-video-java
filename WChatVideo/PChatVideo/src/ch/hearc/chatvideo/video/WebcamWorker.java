@@ -28,7 +28,8 @@ public class WebcamWorker implements Runnable
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override public void run()
+	@Override
+	public void run()
 		{
 		try
 			{
@@ -57,7 +58,7 @@ public class WebcamWorker implements Runnable
 						// Envoi de l'image par le réseau
 						try
 							{
-							if (Application.getInstance().getRemote() != null)
+							if (Application.getInstance().getRemote() != null && Application.getInstance().isConnected())
 								{
 								if (image != null)
 									{
@@ -68,7 +69,7 @@ public class WebcamWorker implements Runnable
 							}
 						catch (RemoteException e1)
 							{
-							System.out.println("Erreur remote");
+							JPanelChat.getInstance().traiterErreurReseau();
 							e1.printStackTrace();
 							}
 						}

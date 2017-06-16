@@ -36,22 +36,9 @@ public class Application implements Application_I ,Runnable
 
 	private Application()
 		{
-		// Générations de clés privée et publique
-		KeyPairGenerator keyGen;
-		try
-			{
-			keyGen = KeyPairGenerator.getInstance("RSA");
-			keyGen.initialize(1024);
-			KeyPair pair = keyGen.generateKeyPair();
-			this.privateKey = pair.getPrivate();
-			this.publicKeyLocal = pair.getPublic();
-			}
-		catch (NoSuchAlgorithmException e)
-			{
-			e.printStackTrace();
-			}
-
-		startHeartbeatChecker();
+		createKey();
+		createHeartbeatChecker();
+		createHeartbeatSender();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -76,6 +63,7 @@ public class Application implements Application_I ,Runnable
 
 	public synchronized void setConnected(boolean connected)
 		{
+		System.out.println("Set connected : " + connected);
 		this.isConnected = connected;
 		}
 
@@ -107,27 +95,28 @@ public class Application implements Application_I ,Runnable
 	@Override
 	public void sendHeartbeat() throws RemoteException
 		{
-		this.lastBeatDist = System.currentTimeMillis();
+		System.out.println("hb received");
+		this.lastHeartbeatReceived = System.currentTimeMillis();
 		}
 
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
 
-	public Application_I getRemote()
+	public synchronized Application_I getRemote()
 		{
+		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
 		if (isConnected)
 			{
 			return this.remote;
 			}
 		else
 			{
-			JPanelChat.getInstance().traiterErreurReseau();
 			return null;
 			}
 		}
 
-	public boolean isConnected()
+	public synchronized boolean isConnected()
 		{
 		return this.isConnected;
 		}
@@ -136,6 +125,7 @@ public class Application implements Application_I ,Runnable
 		{
 		return this.publicKeyDist;
 		}
+
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
@@ -169,7 +159,14 @@ public class Application implements Application_I ,Runnable
 		{
 		try
 			{
-			return NetworkTools.localhost("").get(0).toString().substring(1);
+			if (NetworkTools.localhost("").size() > 0)
+				{
+				return NetworkTools.localhost("").get(0).toString().substring(1);
+				}
+			else
+				{
+				return "Pas d'IP";
+				}
 			}
 		catch (SocketException e)
 			{
@@ -183,10 +180,30 @@ public class Application implements Application_I ,Runnable
 	\*------------------------------------------------------------------*/
 
 	/**
+	 * Générations de clés privée et publique
+	 */
+	private void createKey()
+		{
+		KeyPairGenerator keyGen;
+		try
+			{
+			keyGen = KeyPairGenerator.getInstance("RSA");
+			keyGen.initialize(1024);
+			KeyPair pair = keyGen.generateKeyPair();
+			this.privateKey = pair.getPrivate();
+			this.publicKeyLocal = pair.getPublic();
+			}
+		catch (NoSuchAlgorithmException e)
+			{
+			e.printStackTrace();
+			}
+		}
+
+	/**
 	 * Lance un thread qui check que le client soit toujours vivant.
 	 * Signale au correspondant qu'on est vivant.
 	 */
-	private void startHeartbeatChecker()
+	private void createHeartbeatChecker()
 		{
 		Application.this.heartbeatChecker = new Thread(new Runnable()
 			{
@@ -194,23 +211,49 @@ public class Application implements Application_I ,Runnable
 			@Override
 			public void run()
 				{
-				while(isConnected)
+				while(isConnected())
 					{
 					try
 						{
-						Thread.sleep(1000);
-						Application.this.remote.sendHeartbeat();
-						if (System.currentTimeMillis() - Application.this.lastBeatDist > 1200)
+						Thread.sleep(4000);
+						if (System.currentTimeMillis() - Application.this.lastHeartbeatReceived > 5000)
 							{
 							Application.this.setConnected(false);
-							System.out.println(System.currentTimeMillis() - Application.this.lastBeatDist);
+							System.out.println(System.currentTimeMillis() - Application.this.lastHeartbeatReceived);
+
+							System.out.println("hbchecker");
+							JPanelChat.getInstance().traiterErreurReseau();
 							}
 						}
-					catch (RemoteException e1)
+					catch (InterruptedException e)
 						{
-						e1.printStackTrace();
+						e.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+
+	private void createHeartbeatSender()
+		{
+		Application.this.heartbeatSender = new Thread(new Runnable()
+			{
+
+			@Override
+			public void run()
+				{
+				while(isConnected())
+					{
+					try
+						{
+						Application.this.getRemote().sendHeartbeat();
+						Thread.sleep(1000);
 						}
 					catch (InterruptedException e)
+						{
+						e.printStackTrace();
+						}
+					catch (RemoteException e)
 						{
 						e.printStackTrace();
 						}
@@ -281,6 +324,9 @@ public class Application implements Application_I ,Runnable
 			public void run()
 				{
 				Application.this.remote = connect();
+				setConnected(true);
+				System.out.println("Connected :  " + Application.this.isConnected);
+				Application.this.heartbeatSender.start();
 				Application.this.heartbeatChecker.start();
 				}
 			});
@@ -302,7 +348,6 @@ public class Application implements Application_I ,Runnable
 			System.out.println("Try connect");
 			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(serverName), SettingsRMI.APPLICATION_PORT);
 			Application_I applicationRemote = (Application_I)RmiTools.connectionRemoteObjectBloquant(rmiURL, delayMs, nbTentativeMax);
-			isConnected = true;
 
 			// On envoie direct la clé publique
 			applicationRemote.setKey(this.publicKeyLocal);
@@ -340,8 +385,9 @@ public class Application implements Application_I ,Runnable
 	private PublicKey publicKeyLocal;
 	private PublicKey publicKeyDist;
 	private Application_I remote = null;
-	private long lastBeatDist;
+	private long lastHeartbeatReceived = -1;
 	private Thread heartbeatChecker;
+	private Thread heartbeatSender;
 
 	/*------------------------------*\
 	|*			  Static			*|
