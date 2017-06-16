@@ -3,7 +3,11 @@ package ch.hearc.chatvideo.video;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
+
+import javax.imageio.ImageIO;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamLockException;
@@ -52,6 +56,19 @@ public class WebcamWorker implements Runnable
 					if (webcam.isImageNew())
 						{
 						image = webcam.getImage();
+						if (requestImage)
+							{
+							try
+								{
+								ImageIO.write(image, "PNG", new File("capture"+System.currentTimeMillis()+".png"));
+								}
+							catch (IOException e)
+								{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								}
+							requestImage = false;
+							}
 						// Affichage de l'image sur le panel local, accès par Singleton
 						JPanelChat.getInstance().setImageLocal(image);
 
@@ -98,13 +115,16 @@ public class WebcamWorker implements Runnable
 
 	public void openWebcam()
 		{
-		webcam = createWebcam();
+		webcam.open();
 		}
 
 	public void closeWebcam()
 		{
 		webcam.close();
 		}
+	public void setRequestImageTrue(){
+		requestImage = true;
+	}
 
 	private static Webcam createWebcam()
 		{
@@ -129,6 +149,7 @@ public class WebcamWorker implements Runnable
 
 	// Tools
 	private Webcam webcam;
+	private boolean requestImage;
 	private BufferedImage image;
 	private ImageSerializable imageSerializable;
 	}
