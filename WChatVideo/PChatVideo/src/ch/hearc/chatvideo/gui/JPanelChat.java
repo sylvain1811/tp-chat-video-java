@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -206,7 +207,10 @@ public class JPanelChat extends JPanel
 		jPanelSaisie.add(sendButton, BorderLayout.EAST);
 		jPanelSaisie.setBackground(Color.WHITE);
 
-		jPanelTextChat.add(chatHistory, BorderLayout.CENTER);
+		JScrollPane jScrollPane = new JScrollPane(chatHistory);
+		jScrollPane.setBorder(null);
+
+		jPanelTextChat.add(jScrollPane, BorderLayout.CENTER);
 		jPanelTextChat.add(jPanelSaisie, BorderLayout.SOUTH);
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanelVideoChat, jPanelTextChat);
