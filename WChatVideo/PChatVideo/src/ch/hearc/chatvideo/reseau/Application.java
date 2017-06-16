@@ -311,19 +311,19 @@ public class Application implements Application_I ,Runnable
 	 */
 	private void clientSide()
 		{
-		/*Thread clientSide = new Thread(new Runnable()
+		Thread clientSide = new Thread(new Runnable()
 			{
 
 			@Override
 			public void run()
-				{*/
-		Application.this.remote = connect();
-		System.out.println("Connected :  " + Application.this.isConnected);
-		Application.this.heartbeatSender.start();
-		Application.this.heartbeatChecker.start();
-		/*}
-		});
-		clientSide.start();*/
+				{
+				Application.this.remote = connect();
+				System.out.println("Connected :  " + Application.this.isConnected);
+				Application.this.heartbeatSender.start();
+				Application.this.heartbeatChecker.start();
+				}
+			});
+		clientSide.start();
 		}
 
 	/**
