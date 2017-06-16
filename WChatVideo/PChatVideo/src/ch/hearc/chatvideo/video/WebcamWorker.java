@@ -79,7 +79,7 @@ public class WebcamWorker implements Runnable
 							// Envoi de l'image par le réseau
 							try
 								{
-								if (Application.getInstance().getRemote() != null && Application.getInstance().isConnected())
+								if (Application.getInstance().getRemote() != null)
 									{
 									if (image != null)
 										{
