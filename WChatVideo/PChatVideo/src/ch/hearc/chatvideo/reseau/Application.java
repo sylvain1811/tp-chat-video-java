@@ -270,35 +270,35 @@ public class Application implements Application_I ,Runnable
 	 */
 	private void serverSide()
 		{
-		/*Thread serverSide = new Thread(new Runnable()
+		Thread serverSide = new Thread(new Runnable()
 			{
 
 			@Override
 			public void run()
-				{*/
-		try
-			{
-			//  On prend la première adresse ETH pour se partager
-			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(getIp()), SettingsRMI.APPLICATION_PORT);
-			RmiTools.shareObject(Application.this, rmiURL);
-			}
-		catch (RemoteException e)
-			{
-			System.err.println("Erreur shareObject");
-			e.printStackTrace();
-			}
-		catch (MalformedURLException e)
-			{
-			// TODO Traiter URL mal formée
-			e.printStackTrace();
-			}
-		catch (UnknownHostException e)
-			{
-			e.printStackTrace();
-			}
-		/*}
-		});
-		serverSide.start();*/
+				{
+				try
+					{
+					//  On prend la première adresse ETH pour se partager
+					RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(getIp()), SettingsRMI.APPLICATION_PORT);
+					RmiTools.shareObject(Application.this, rmiURL);
+					}
+				catch (RemoteException e)
+					{
+					System.err.println("Erreur shareObject");
+					e.printStackTrace();
+					}
+				catch (MalformedURLException e)
+					{
+					// TODO Traiter URL mal formée
+					e.printStackTrace();
+					}
+				catch (UnknownHostException e)
+					{
+					e.printStackTrace();
+					}
+				}
+			});
+		serverSide.start();
 		}
 
 	/*------------------------------*\
