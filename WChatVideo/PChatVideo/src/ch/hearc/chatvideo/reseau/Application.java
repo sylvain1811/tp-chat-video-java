@@ -104,8 +104,8 @@ public class Application implements Application_I ,Runnable
 
 	public synchronized Application_I getRemote()
 		{
-		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
-		if (isConnected || this.lastHeartbeatReceived == -1)
+		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);  || this.lastHeartbeatReceived == -1
+		if (isConnected)
 			{
 			return this.remote;
 			}
