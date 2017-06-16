@@ -26,6 +26,8 @@ public class WebcamWorker implements Runnable
 
 	public WebcamWorker()
 		{
+		requestImage = false;
+		isDisplayed = true;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -60,7 +62,7 @@ public class WebcamWorker implements Runnable
 							{
 							try
 								{
-								ImageIO.write(image, "PNG", new File("capture"+System.currentTimeMillis()+".png"));
+								ImageIO.write(image, "PNG", new File("capture" + System.currentTimeMillis() + ".png"));
 								}
 							catch (IOException e)
 								{
@@ -122,9 +124,27 @@ public class WebcamWorker implements Runnable
 		{
 		webcam.close();
 		}
-	public void setRequestImageTrue(){
+
+	public void changeWebcamStatus()
+		{
+		isDisplayed = !isDisplayed;
+		if (webcam != null)
+			{
+			if (isDisplayed)
+				{
+				webcam.open();
+				}
+			else
+				{
+				webcam.close();
+				}
+			}
+		}
+
+	public void setRequestImageTrue()
+		{
 		requestImage = true;
-	}
+		}
 
 	private static Webcam createWebcam()
 		{
@@ -150,6 +170,7 @@ public class WebcamWorker implements Runnable
 	// Tools
 	private Webcam webcam;
 	private boolean requestImage;
+	private boolean isDisplayed;
 	private BufferedImage image;
 	private ImageSerializable imageSerializable;
 	}
