@@ -176,7 +176,12 @@ public class JPanelChat extends JPanel
 		buttonSnapShot.setBorder(BorderFactory.createEmptyBorder());
 		buttonSnapShot.setContentAreaFilled(false);
 
-		buttonToggleVideo = new JButton("Test");
+		buttonToggleVideo = new JButton();
+		url = JPanelChat.class.getResource("/boutonToggleVideo.png");
+		buttonToggleVideo.setIcon(new ImageIcon(url));
+
+		buttonToggleVideo.setBorder(BorderFactory.createEmptyBorder());
+		buttonToggleVideo.setContentAreaFilled(false);
 
 		jPanelControleWebcam.add(buttonGriser);
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
@@ -337,6 +342,26 @@ public class JPanelChat extends JPanel
 				}
 			});
 
+		buttonToggleVideo.addMouseListener(new MouseAdapter()
+			{
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+				{
+				isVideo = !isVideo;
+				URL url = null;
+				if (isVideo)
+					{
+					url = JPanelChat.class.getResource("/boutonToggleVideo.png");
+					}
+				else
+					{
+					url = JPanelChat.class.getResource("/boutonToggleVideoHover.png");
+					}
+				buttonToggleVideo.setIcon(new ImageIcon(url));
+				}
+			});
+
 		buttonSnapShot.addActionListener(new ActionListener()
 			{
 
@@ -410,5 +435,6 @@ public class JPanelChat extends JPanel
 	private JButton buttonToggleVideo;
 	private JSplitPane splitPane;
 	private boolean isBlack = false;
+	private boolean isVideo = true;
 
 	}
