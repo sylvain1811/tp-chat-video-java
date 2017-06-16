@@ -122,6 +122,10 @@ public class WebcamWorker implements Runnable
 		{
 		webcam.open();
 		}
+	public void renewWebcam()
+		{
+		this.webcam = createWebcam();
+		}
 
 	public void closeWebcam()
 		{

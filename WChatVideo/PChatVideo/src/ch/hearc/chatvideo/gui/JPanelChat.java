@@ -177,6 +177,11 @@ public class JPanelChat extends JPanel
 		buttonSnapShot.setContentAreaFilled(false);
 
 		buttonToggleVideo = new JButton();
+		url = JPanelChat.class.getResource("/boutonToggleVideo.png");
+		buttonToggleVideo.setIcon(new ImageIcon(url));
+
+		buttonToggleVideo.setBorder(BorderFactory.createEmptyBorder());
+		buttonToggleVideo.setContentAreaFilled(false);
 
 		jPanelControleWebcam.add(buttonGriser);
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
@@ -187,6 +192,10 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonSnapShot);
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(buttonToggleVideo);
 		jPanelControleWebcam.setBackground(Color.WHITE);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
@@ -316,20 +325,40 @@ public class JPanelChat extends JPanel
 		buttonMirroir.addMouseListener(new MouseAdapter()
 			{
 
+			URL url = null;
+
+			@Override
+			public void mouseEntered(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/mirrorBoutonHover.png");
+				buttonMirroir.setIcon(new ImageIcon(url));
+				}
+
+			@Override
+			public void mouseExited(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/mirrorBouton.png");
+				buttonMirroir.setIcon(new ImageIcon(url));
+				}
+			});
+
+		buttonToggleVideo.addMouseListener(new MouseAdapter()
+			{
+
 			@Override
 			public void mouseClicked(MouseEvent e)
 				{
-				isRight = !isRight;
+				isVideo = !isVideo;
 				URL url = null;
-				if (isRight)
+				if (isVideo)
 					{
-					url = JPanelChat.class.getResource("/mirrorBouton.png");
+					url = JPanelChat.class.getResource("/boutonToggleVideo.png");
 					}
 				else
 					{
-					url = JPanelChat.class.getResource("/mirrorBoutonHover.png");
+					url = JPanelChat.class.getResource("/boutonToggleVideoHover.png");
 					}
-				buttonMirroir.setIcon(new ImageIcon(url));
+				buttonToggleVideo.setIcon(new ImageIcon(url));
 				}
 			});
 
@@ -340,6 +369,16 @@ public class JPanelChat extends JPanel
 			public void actionPerformed(ActionEvent e)
 				{
 				webcamWorker.setRequestImageTrue();
+				}
+			});
+
+		buttonToggleVideo.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				webcamWorker.changeWebcamStatus();
 				}
 			});
 
@@ -396,6 +435,6 @@ public class JPanelChat extends JPanel
 	private JButton buttonToggleVideo;
 	private JSplitPane splitPane;
 	private boolean isBlack = false;
-	private boolean isRight = true;
+	private boolean isVideo = true;
 
 	}
