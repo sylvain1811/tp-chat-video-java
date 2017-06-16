@@ -261,10 +261,13 @@ public class JPanelConfig extends JPanel
 				// Store les données pour prochain lancement
 				storeProperties();
 
+				//Initialisation de webcamWorker
+				WebcamWorker worker = new WebcamWorker();
+
 				// Remplace le panel config par le panel chat (contenant chat texte et les vidéos)
 				jPanelPrincipal.removeAll();
 
-				JPanelChat.init(textInputPseudo.getText());
+				JPanelChat.init(textInputPseudo.getText(), worker);
 
 				JPanelDecorator jPanelDecorator = new JPanelDecorator(JPanelChat.getInstance(), 30);
 
@@ -279,7 +282,6 @@ public class JPanelConfig extends JPanel
 				reseauThread.start();
 
 				// Lancement de la partie webcam
-				WebcamWorker worker = new WebcamWorker();
 				Thread webcamThread = new Thread(worker);
 				webcamThread.start();
 				new WebcamCustomDiscoveryListener(worker);

@@ -32,6 +32,7 @@ import org.junit.Assert;
 import ch.hearc.chatvideo.reseau.Application;
 import ch.hearc.chatvideo.tools.StringCrypter;
 import ch.hearc.chatvideo.video.JPanelWebcam;
+import ch.hearc.chatvideo.video.WebcamWorker;
 
 /*---------------------------------------------------------------*\
 |*							SINGLETON							 *|
@@ -82,9 +83,10 @@ public class JPanelChat extends JPanel
 	|*			  Static			*|
 	\*------------------------------*/
 
-	public static synchronized void init(String pseudo)
+	public static synchronized void init(String pseudo, WebcamWorker webcamWorker)
 		{
 		JPanelChat.pseudo = pseudo;
+		JPanelChat.webcamWorker = webcamWorker;
 		}
 
 	public static synchronized JPanelChat getInstance()
@@ -138,8 +140,12 @@ public class JPanelChat extends JPanel
 
 		chatHistory = new JTextArea();
 		chatHistory.setFocusable(false);
+		chatHistory.setLineWrap(true);
+		chatHistory.setWrapStyleWord(true);
+		chatHistory.setFont(chatHistory.getFont().deriveFont(18f));
 		messageInput = new JTextField();
 		messageInput.setPreferredSize(new Dimension(200, 25));
+		messageInput.setFont(messageInput.getFont().deriveFont(18f));
 
 		GridLayout gridLayout = new GridLayout(0, 1);
 
@@ -163,11 +169,24 @@ public class JPanelChat extends JPanel
 		buttonMirroir.setBorder(BorderFactory.createEmptyBorder());
 		buttonMirroir.setContentAreaFilled(false);
 
+		buttonSnapShot = new JButton();
+		url = JPanelChat.class.getResource("/boutonSnapShot.png");
+		buttonSnapShot.setIcon(new ImageIcon(url));
+
+		buttonSnapShot.setBorder(BorderFactory.createEmptyBorder());
+		buttonSnapShot.setContentAreaFilled(false);
+
+		buttonToggleVideo = new JButton();
+
 		jPanelControleWebcam.add(buttonGriser);
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonMirroir);
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(buttonSnapShot);
 		jPanelControleWebcam.setBackground(Color.WHITE);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
@@ -313,6 +332,36 @@ public class JPanelChat extends JPanel
 				buttonMirroir.setIcon(new ImageIcon(url));
 				}
 			});
+
+		buttonSnapShot.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				webcamWorker.setRequestImageTrue();
+				}
+			});
+
+		buttonSnapShot.addMouseListener(new MouseAdapter()
+			{
+
+			URL url = null;
+
+			@Override
+			public void mouseEntered(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonSnapShotHover.png");
+				buttonSnapShot.setIcon(new ImageIcon(url));
+				}
+
+			@Override
+			public void mouseExited(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/boutonSnapShot.png");
+				buttonSnapShot.setIcon(new ImageIcon(url));
+				}
+			});
 		}
 
 	private void appearance()
@@ -327,6 +376,7 @@ public class JPanelChat extends JPanel
 
 	// Inputs
 	public static String pseudo = null;
+	private static WebcamWorker webcamWorker = null;
 
 	// Tools
 	private static JPanelChat INSTANCE = null;
@@ -342,6 +392,8 @@ public class JPanelChat extends JPanel
 	private JButton sendButton;
 	private JButton buttonMirroir;
 	private JButton buttonGriser;
+	private JButton buttonSnapShot;
+	private JButton buttonToggleVideo;
 	private JSplitPane splitPane;
 	private boolean isBlack = false;
 	private boolean isRight = true;

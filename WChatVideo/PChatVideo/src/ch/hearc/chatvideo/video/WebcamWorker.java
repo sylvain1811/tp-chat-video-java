@@ -54,42 +54,45 @@ public class WebcamWorker implements Runnable
 				{
 				if (webcam.isOpen())
 					{
-					// la première image sera forcement nouvelle
-					if (webcam.isImageNew())
+					if (isDisplayed)
 						{
-						image = webcam.getImage();
-						if (requestImage)
+						// la première image sera forcement nouvelle
+						if (webcam.isImageNew())
 							{
+							image = webcam.getImage();
+							if (requestImage)
+								{
+								try
+									{
+									ImageIO.write(image, "PNG", new File("capture" + System.currentTimeMillis() + ".png"));
+									}
+								catch (IOException e)
+									{
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									}
+								requestImage = false;
+								}
+							// Affichage de l'image sur le panel local, accès par Singleton
+							JPanelChat.getInstance().setImageLocal(image);
+
+							// Envoi de l'image par le réseau
 							try
 								{
-								ImageIO.write(image, "PNG", new File("capture" + System.currentTimeMillis() + ".png"));
-								}
-							catch (IOException e)
-								{
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-								}
-							requestImage = false;
-							}
-						// Affichage de l'image sur le panel local, accès par Singleton
-						JPanelChat.getInstance().setImageLocal(image);
-
-						// Envoi de l'image par le réseau
-						try
-							{
-							if (Application.getInstance().getRemote() != null && Application.getInstance().isConnected())
-								{
-								if (image != null)
+								if (Application.getInstance().getRemote() != null && Application.getInstance().isConnected())
 									{
-									imageSerializable = new ImageSerializable(image);
+									if (image != null)
+										{
+										imageSerializable = new ImageSerializable(image);
+										}
+									Application.getInstance().getRemote().setImage(new ImageCrypter(imageSerializable));
 									}
-								Application.getInstance().getRemote().setImage(new ImageCrypter(imageSerializable));
 								}
-							}
-						catch (RemoteException e1)
-							{
-							JPanelChat.getInstance().traiterErreurReseau();
-							e1.printStackTrace();
+							catch (RemoteException e1)
+								{
+								JPanelChat.getInstance().traiterErreurReseau();
+								e1.printStackTrace();
+								}
 							}
 						}
 					}
@@ -128,17 +131,6 @@ public class WebcamWorker implements Runnable
 	public void changeWebcamStatus()
 		{
 		isDisplayed = !isDisplayed;
-		if (webcam != null)
-			{
-			if (isDisplayed)
-				{
-				webcam.open();
-				}
-			else
-				{
-				webcam.close();
-				}
-			}
 		}
 
 	public void setRequestImageTrue()
