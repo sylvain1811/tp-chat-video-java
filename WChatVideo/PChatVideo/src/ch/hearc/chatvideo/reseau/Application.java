@@ -11,7 +11,6 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.List;
 
 import org.junit.Assert;
 
@@ -108,10 +107,12 @@ public class Application implements Application_I ,Runnable
 		//System.out.println(isConnected + " , " + this.lastHeartbeatReceived);
 		if (isConnected)
 			{
+			System.out.println("connected");
 			return this.remote;
 			}
 		else
 			{
+			System.out.println("Remote disconnected");
 			return null;
 			}
 		}
@@ -247,7 +248,7 @@ public class Application implements Application_I ,Runnable
 					try
 						{
 						Application.this.getRemote().sendHeartbeat();
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 						}
 					catch (InterruptedException e)
 						{
@@ -272,39 +273,35 @@ public class Application implements Application_I ,Runnable
 	 */
 	private void serverSide()
 		{
-		Thread serverSide = new Thread(new Runnable()
+		/*Thread serverSide = new Thread(new Runnable()
 			{
 
 			@Override
 			public void run()
-				{
-				try
-					{
-					//  On prend la première adresse ETH pour se partager
-					List<InetAddress> adresses = NetworkTools.localhost("");
-					System.out.println(adresses);
-					System.out.println(adresses.get(0));
-					RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, adresses.get(0), SettingsRMI.APPLICATION_PORT);
-					RmiTools.shareObject(Application.this, rmiURL);
-					}
-				catch (RemoteException e)
-					{
-					System.err.println("Erreur shareObject");
-					e.printStackTrace();
-					}
-				catch (MalformedURLException e)
-					{
-					// TODO Traiter URL mal formée
-					e.printStackTrace();
-					}
-				catch (SocketException e)
-					{
-					// TODO Gérer erreur localhostEth()
-					e.printStackTrace();
-					}
-				}
-			});
-		serverSide.start();
+				{*/
+		try
+			{
+			//  On prend la première adresse ETH pour se partager
+			RmiURL rmiURL = new RmiURL(SettingsRMI.APPLICATION_ID, InetAddress.getByName(getIp()), SettingsRMI.APPLICATION_PORT);
+			RmiTools.shareObject(Application.this, rmiURL);
+			}
+		catch (RemoteException e)
+			{
+			System.err.println("Erreur shareObject");
+			e.printStackTrace();
+			}
+		catch (MalformedURLException e)
+			{
+			// TODO Traiter URL mal formée
+			e.printStackTrace();
+			}
+		catch (UnknownHostException e)
+			{
+			e.printStackTrace();
+			}
+		/*}
+		});
+		serverSide.start();*/
 		}
 
 	/*------------------------------*\
@@ -317,21 +314,21 @@ public class Application implements Application_I ,Runnable
 	 */
 	private void clientSide()
 		{
-		Thread clientSide = new Thread(new Runnable()
+		/*Thread clientSide = new Thread(new Runnable()
 			{
 
 			@Override
 			public void run()
-				{
-				Application.this.remote = connect();
-				setConnected(true);
-				System.out.println("Connected :  " + Application.this.isConnected);
-				Application.this.heartbeatSender.start();
-				Application.this.heartbeatChecker.start();
-				}
-			});
-		clientSide.start();
+				{*/
+		Application.this.remote = connect();
+		setConnected(true);
+		System.out.println("Connected :  " + Application.this.isConnected);
+		Application.this.heartbeatSender.start();
+		Application.this.heartbeatChecker.start();
 		}
+	/*});
+	clientSide.start();
+	}*/
 
 	/**
 	 * Tente de se connecter à une Application distante avec RMI
