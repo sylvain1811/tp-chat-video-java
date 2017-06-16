@@ -176,7 +176,7 @@ public class JPanelChat extends JPanel
 		buttonSnapShot.setBorder(BorderFactory.createEmptyBorder());
 		buttonSnapShot.setContentAreaFilled(false);
 
-		buttonToggleVideo = new JButton();
+		buttonToggleVideo = new JButton("Test");
 
 		jPanelControleWebcam.add(buttonGriser);
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
@@ -187,6 +187,10 @@ public class JPanelChat extends JPanel
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(Box.createHorizontalGlue());
 		jPanelControleWebcam.add(buttonSnapShot);
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(Box.createHorizontalGlue());
+		jPanelControleWebcam.add(buttonToggleVideo);
 		jPanelControleWebcam.setBackground(Color.WHITE);
 
 		jPanelVideoChat.add(jPanelWebcams, BorderLayout.CENTER);
@@ -316,19 +320,19 @@ public class JPanelChat extends JPanel
 		buttonMirroir.addMouseListener(new MouseAdapter()
 			{
 
+			URL url = null;
+
 			@Override
-			public void mouseClicked(MouseEvent e)
+			public void mouseEntered(MouseEvent evt)
 				{
-				isRight = !isRight;
-				URL url = null;
-				if (isRight)
-					{
-					url = JPanelChat.class.getResource("/mirrorBouton.png");
-					}
-				else
-					{
-					url = JPanelChat.class.getResource("/mirrorBoutonHover.png");
-					}
+				url = JPanelConfig.class.getResource("/mirrorBoutonHover.png");
+				buttonMirroir.setIcon(new ImageIcon(url));
+				}
+
+			@Override
+			public void mouseExited(MouseEvent evt)
+				{
+				url = JPanelConfig.class.getResource("/mirrorBouton.png");
 				buttonMirroir.setIcon(new ImageIcon(url));
 				}
 			});
@@ -340,6 +344,16 @@ public class JPanelChat extends JPanel
 			public void actionPerformed(ActionEvent e)
 				{
 				webcamWorker.setRequestImageTrue();
+				}
+			});
+
+		buttonToggleVideo.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				webcamWorker.changeWebcamStatus();
 				}
 			});
 
@@ -396,6 +410,5 @@ public class JPanelChat extends JPanel
 	private JButton buttonToggleVideo;
 	private JSplitPane splitPane;
 	private boolean isBlack = false;
-	private boolean isRight = true;
 
 	}
