@@ -26,6 +26,8 @@ public class WebcamWorker implements Runnable
 
 	public WebcamWorker()
 		{
+		requestImage = false;
+		isDisplayed = true;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -123,6 +125,22 @@ public class WebcamWorker implements Runnable
 		webcam.close();
 		}
 
+	public void changeWebcamStatus()
+		{
+		isDisplayed = !isDisplayed;
+		if (webcam != null)
+			{
+			if (isDisplayed)
+				{
+				webcam.open();
+				}
+			else
+				{
+				webcam.close();
+				}
+			}
+		}
+
 	public void setRequestImageTrue()
 		{
 		requestImage = true;
@@ -152,6 +170,7 @@ public class WebcamWorker implements Runnable
 	// Tools
 	private Webcam webcam;
 	private boolean requestImage;
+	private boolean isDisplayed;
 	private BufferedImage image;
 	private ImageSerializable imageSerializable;
 	}
